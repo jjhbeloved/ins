@@ -1,0 +1,17 @@
+{
+  "wlsHome": "/data/odc/app/weblogic",
+  "adminAddr": "10.1.234.149",
+  "adminPort": "7001",
+  "userName": "dev_odc",
+  "passWord": "69@Ailk!@#",
+  "listenAddr": "10.1.234.149",
+  "listenPort": "8135",
+  "srvName": "cache",
+  "margs": "-Xmx512m -Xms512m -XX:PermSize=256m -XX:MaxPermSize=256m",
+  "jars": [
+    "$HOME/properties/jar/resoure.jar"
+  ],
+  "domainPath": "/data/odc/dev_domain",
+  "option": "ADD",
+  "consolePath": "/data/odc/console"
+}
