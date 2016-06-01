@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"path/filepath"
 	"asiainfo.com/ins/utils"
+	"time"
 )
 
 type Wls12c struct {
@@ -182,7 +183,9 @@ func (w *Wls12c) touchNonPasswdRun() error {
 /* Begin Console File */
 
 const templateStartConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s starting..."
 export _SERVER=%s
 export CLASSPATH="${CLASSPATH}:%s"
@@ -191,13 +194,17 @@ nohup %s/bin/startManagedWebLogic.sh %s t3://%s:%s 1>>/dev/null 2>>%s/logs/faile
 echo "%s started, pls wating 30 sec..."
 `
 const templateStopConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s stoping..."
 %s/bin/stopManagedWebLogic.sh %s t3://%s:%s
 echo "%s stoped, pls wating 30 sec..."
 `
 const templateRestartConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s restarting..."
 %s
 %s
@@ -215,6 +222,7 @@ func (w *Wls12c) touchConsoleScript() {
 	start := filepath.Join(w.ConsolePath, "start", "start_" + w.SrvName + ".sh")
 	stop := filepath.Join(w.ConsolePath, "stop", "stop_" + w.SrvName + ".sh")
 	restart := filepath.Join(w.ConsolePath, "restart", "restart_" + w.SrvName + ".sh")
+	now := time.Now().String()
 	var jars string
 	for _, jar := range w.Jars {
 		jars += ":" + jar
@@ -224,6 +232,7 @@ func (w *Wls12c) touchConsoleScript() {
 		start,
 		[]byte(fmt.Sprintf(
 			templateStartConsole,
+			now,
 			w.SrvName, srvpath, jars,
 			w.Margs, srvpath, w.DomainPath, w.SrvName,
 			w.AdminAddr, w.AdminPort, srvpath, w.SrvName)),
@@ -234,14 +243,18 @@ func (w *Wls12c) touchConsoleScript() {
 	// stop
 	logs.Print(ioutil.WriteFile(
 		stop,
-		[]byte(fmt.Sprintf(templateStopConsole, w.SrvName, w.DomainPath, w.SrvName, w.AdminAddr, w.AdminPort, w.SrvName)),
+		[]byte(fmt.Sprintf(templateStopConsole,
+			now,
+			w.SrvName, w.DomainPath, w.SrvName, w.AdminAddr, w.AdminPort, w.SrvName)),
 		0750,
 	))
 
 	// restart
 	logs.Print(ioutil.WriteFile(
 		restart,
-		[]byte(fmt.Sprintf(templateRestartConsole, w.SrvName, stop, start, w.SrvName)),
+		[]byte(fmt.Sprintf(templateRestartConsole,
+			now,
+			w.SrvName, stop, start, w.SrvName)),
 		0750,
 	))
 }

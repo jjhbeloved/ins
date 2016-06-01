@@ -8,6 +8,8 @@ import (
 	"asiainfo.com/ins/install/wls"
 	"path/filepath"
 	"asiainfo.com/ins/install/tomcat"
+	"asiainfo.com/ins/install/jdk"
+	"asiainfo.com/ins/install/memcached"
 )
 
 func init()  {
@@ -72,6 +74,24 @@ func chs2()  {
 				continue
 			}
 			ins = &tomcat
+		case cli.JDKCONF:
+			var jdk jdk.Jdk
+			bs, _ := ioutil.ReadFile(fn)
+			e := jdk.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			ins = &jdk
+		case cli.MEMCACHEDCONF:
+			var mem memcached.Memcached
+			bs, _ := ioutil.ReadFile(fn)
+			e := mem.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			ins = &mem
 		default:
 			ins = nil
 			continue

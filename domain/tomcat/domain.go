@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"time"
 )
 
 type Tomcat struct {
@@ -17,19 +18,23 @@ type Tomcat struct {
 	NATIVE_HOME  string        `json:"nativeHome"`
 	APP_HOME     string        `json:"app_home"`
 	JDK_HOME     string        `json:"jdkHome"`
-	ListenAddr   string        `json:"listenAddr"`
-	ListenPort   string        `json:"listenPort"`
-	ShutdownPort string        `json:"shutdownPort"`
 	ServerLoader string        `json:"serverLoader"`
 	SharedLoader string        `json:"sharedLoader"`
 	DomainPath   string        `json:"domainPath"`
 	ServerName   string        `json:"serverName"`
-	Version      string        `json:"version"`
+	Servers      []Server      `json:"servers"`
 	Protocol     string        `json:"protocol"`
 	JVM          string        `json:"jvm"`
 	Timeout      string        `json:"timeout"`
 	Option       string        `json:"option"`
 	ConsolePath  string        `json:"consolePath"`
+}
+
+type Server struct {
+	Version      string        `json:"version"`
+	ListenAddr   string        `json:"listenAddr"`
+	ListenPort   string        `json:"listenPort"`
+	ShutdownPort string        `json:"shutdownPort"`
 }
 
 func (w *Tomcat) Json(bs []byte) error {
@@ -58,11 +63,10 @@ func (tomcat *Tomcat) Remove() error {
 /* --------------------------------------------------------- */
 /* Begin Configuration File */
 
-const templateCatalinaProperties = `
-package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat.
+const templateCatalinaProperties = `package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat.
 package.definition=sun.,java.,org.apache.catalina.,org.apache.coyote.,\
 org.apache.jasper.,org.apache.naming.,org.apache.tomcat.
-common.loader="${catalina.base}/lib","${catalina.base}/lib/*.jar","${catalina.home}/lib","${catalina.home}/lib/*.jar"
+common.loader=${catalina.base}/lib,${catalina.base}/lib/*.jar,${catalina.home}/lib,${catalina.home}/lib/*.jar
 server.loader=%s
 shared.loader=%s
 tomcat.util.scan.StandardJarScanFilter.jarsToSkip=\
@@ -96,8 +100,7 @@ log4j-core*.jar,log4j-taglib*.jar,log4javascript*.jar,slf4j-taglib*.jar
 tomcat.util.buf.StringCache.byte.enabled=true
 `
 
-const templateServerXml = `
-<?xml version='1.0' encoding='utf-8'?>
+const templateServerXml = `<?xml version='1.0' encoding='utf-8'?>
 <Server port="%s" shutdown="SHUTDOWN">
   <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
@@ -128,18 +131,18 @@ const templateServerXml = `
 </Server>
 `
 
-const copyDomain  = `#!/bin/bash
+const copyDomain = `#!/bin/bash
 
-mkdir -p %s %s %s %s %s
+mkdir -p %s %s %s %s %s %s
 cp -r %s %s
 `
 
 /**
  * touch conf local file
  */
-func (tomcat *Tomcat) touchConf() (string, string) {
+func (tomcat *Tomcat) touchConf(server Server) {
 
-	fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, tomcat.Version)
+	fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, server.Version)
 	catalinaProperties := filepath.Join(fullName, "conf", "catalina.properties")
 	serverXml := filepath.Join(fullName, "conf", "server.xml")
 	protocol := "org.apache.coyote.http11.Http11NioProtocol"
@@ -160,46 +163,48 @@ func (tomcat *Tomcat) touchConf() (string, string) {
 	logs.Print(ioutil.WriteFile(
 		serverXml,
 		[]byte(fmt.Sprintf(templateServerXml,
-			tomcat.ShutdownPort,
-			tomcat.ListenPort, protocol,
+			server.ShutdownPort,
+			server.ListenPort, protocol,
 			"/" + tomcat.ServerName, tomcat.APP_HOME,
 		)),
 		0750,
 	))
-	return catalinaProperties, serverXml
 }
 
 /**
  * touch conf local file
  */
 func (tomcat *Tomcat) shell() error {
-	os.MkdirAll(utils.TMPD, 0750)
-	tmp := filepath.Join(utils.TMPD, "exec.sh")
-	sourceConf := filepath.Join(tomcat.TOMCAT_HOME, "conf")
-	fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, tomcat.Version)
-	targetConf := filepath.Join(fullName, "conf")
-	targetTemp := filepath.Join(fullName, "temp")
-	targetLogs := filepath.Join(fullName, "logs")
-	targetWork := filepath.Join(fullName, "work")
-	targetDump := filepath.Join(fullName, "dump")
-	// serverXml
-	logs.Print(ioutil.WriteFile(
-		tmp,
-		[]byte(fmt.Sprintf(copyDomain,
-			targetConf, targetTemp, targetLogs, targetWork, targetDump,
-			sourceConf, fullName,
-		)),
-		0750,
-	))
-	defer os.Remove(tmp)
-	// 根据模板生成domain
-	cmd := exec.Command(tmp)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return err
+	for _, server := range tomcat.Servers {
+		os.MkdirAll(utils.TMPD, 0750)
+		tmp := filepath.Join(utils.TMPD, "exec.sh")
+		sourceConf := filepath.Join(tomcat.TOMCAT_HOME, "conf")
+		fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, server.Version)
+		targetConf := filepath.Join(fullName, "conf")
+		targetTemp := filepath.Join(fullName, "temp")
+		targetLogs := filepath.Join(fullName, "logs")
+		targetWork := filepath.Join(fullName, "work")
+		targetDump := filepath.Join(fullName, "dump")
+		targetWebapps := filepath.Join(fullName, "webapps")
+		// copy
+		logs.Print(ioutil.WriteFile(
+			tmp,
+			[]byte(fmt.Sprintf(copyDomain,
+				targetConf, targetTemp, targetLogs, targetWork, targetDump, targetWebapps,
+				sourceConf, fullName,
+			)),
+			0750,
+		))
+		defer os.Remove(tmp)
+		// 根据模板生成domain
+		cmd := exec.Command(tmp)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			return err
+		}
+		tomcat.touchConf(server)
 	}
-	tomcat.touchConf()
 	return nil
 }
 /* End Configuration File */
@@ -210,13 +215,15 @@ func (tomcat *Tomcat) shell() error {
 /* --------------------------------------------------------- */
 /* Begin Console File */
 const templateStartConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s starting..."
-CATALINA_HOME=%s
-CATALINA_BASE=%s
-JAVA_HOME=%s
+CATALINA_HOME="%s"
+CATALINA_BASE="%s"
+JAVA_HOME="%s"
 export CATALINA_HOME CATALINA_BASE JAVA_HOME
-export JVM=%s
+export JVM="%s"
 export JAVA_OPTS="${JVM} -Djava.library.path=%s -Dbalance_job_group_first_wait_time=20 -XX:ErrorFile=${CATALINA_BASE}/dump/err.log -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${CATALINA_BASE}/dump/  -Dfile.encoding=UTF-8 -Dencoding=UTF-8"
 export CATALINA_OPTS="-DTOMCAT_NAME=%s -XX:+UseConcMarkSweepGC -XX:+CMSConcurrentMTEnabled -XX:CMSInitiatingOccupancyFraction=59 -XX:SurvivorRatio=4 -XX:ParallelGCThreads=8"
 CATALINA_TMPDIR=${CATALINA_BASE}/temp
@@ -227,7 +234,9 @@ $CATALINA_HOME/bin/startup.sh
 echo "%s started, pls wating 30 sec..."
 `
 const templateStopConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s stopping..."
 CATALINA_HOME=%s
 CATALINA_BASE=%s
@@ -237,11 +246,13 @@ CATALINA_TMPDIR=${CATALINA_BASE}/temp
 export CATALINA_TMPDIR
 cd ${CATALINA_TMPDIR}
 export CATALINA_PID=%s.pid
-$CATALINA_HOME/bin/catalina.sh stop %s -force
+$CATALINA_HOME/bin/catalina.sh stop %d -force
 echo "%s stopped, pls wating 30 sec..."
 `
 const templateRestartConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s restarting..."
 %s
 %s
@@ -255,55 +266,62 @@ func (tomcat *Tomcat) touchConsoleScript() {
 	if err != nil {
 		logs.Print(err)
 	}
-	//srvpath := filepath.Join(tomcat.DomainPath, tomcat.ServerName, tomcat.Version)
-	simpleName := tomcat.ServerName + tomcat.Version
-	start := filepath.Join(tomcat.ConsolePath, "start", "start_" + simpleName + ".sh")
-	stop := filepath.Join(tomcat.ConsolePath, "stop", "stop_" + simpleName + ".sh")
-	restart := filepath.Join(tomcat.ConsolePath, "restart", "restart_" + simpleName + ".sh")
-	fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, tomcat.Version)
+	for _, server := range tomcat.Servers {
+		//srvpath := filepath.Join(tomcat.DomainPath, tomcat.ServerName, tomcat.Version)
+		simpleName := tomcat.ServerName + server.Version
+		start := filepath.Join(tomcat.ConsolePath, "start", "start_" + simpleName + ".sh")
+		stop := filepath.Join(tomcat.ConsolePath, "stop", "stop_" + simpleName + ".sh")
+		restart := filepath.Join(tomcat.ConsolePath, "restart", "restart_" + simpleName + ".sh")
+		fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, server.Version)
+		nativeLib := filepath.Join(tomcat.NATIVE_HOME, "lib")
+		now := time.Now().String()
 
+		timeout := 10
+		if len(tomcat.Timeout) > 0 {
+			timeout, _ = strconv.Atoi(tomcat.Timeout)
+		}
+		jvm := "-Xmx512m -Xms512m -XX:MaxPermSize=128m -XX:PermSize=128m"
+		if len(tomcat.JVM) > 0 {
+			jvm = tomcat.JVM
+		}
+		// start
+		logs.Print(ioutil.WriteFile(
+			start,
+			[]byte(fmt.Sprintf(
+				templateStartConsole,
+				now,
+				simpleName,
+				tomcat.TOMCAT_HOME, fullName, tomcat.JDK_HOME,
+				jvm, nativeLib,
+				simpleName,
+				simpleName,
+				simpleName,
+			)),
+			0750,
+		))
 
-	timeout := 10
-	if len(tomcat.Timeout) > 0 {
-		timeout, _ = strconv.Atoi(tomcat.Timeout)
+		// stop
+		logs.Print(ioutil.WriteFile(
+			stop,
+			[]byte(fmt.Sprintf(templateStopConsole,
+				now,
+				simpleName,
+				tomcat.TOMCAT_HOME, fullName, tomcat.JDK_HOME,
+				simpleName, timeout,
+				simpleName,
+			)),
+			0750,
+		))
+
+		// restart
+		logs.Print(ioutil.WriteFile(
+			restart,
+			[]byte(fmt.Sprintf(templateRestartConsole,
+				now,
+				simpleName, stop, start, simpleName)),
+			0750,
+		))
 	}
-	jvm := "-Xmx512m -Xms512m -XX:MaxPermSize=128m -XX:PermSize=128m"
-	if len(tomcat.JVM) > 0 {
-		jvm = tomcat.JVM
-	}
-	// start
-	logs.Print(ioutil.WriteFile(
-		start,
-		[]byte(fmt.Sprintf(
-			templateStartConsole,
-			simpleName,
-			tomcat.TOMCAT_HOME, fullName, tomcat.JDK_HOME,
-			jvm, tomcat.NATIVE_HOME,
-			simpleName,
-			simpleName,
-			simpleName,
-		)),
-		0750,
-	))
-
-	// stop
-	logs.Print(ioutil.WriteFile(
-		stop,
-		[]byte(fmt.Sprintf(templateStopConsole,
-			simpleName,
-			tomcat.TOMCAT_HOME, fullName, tomcat.JDK_HOME,
-			simpleName, timeout,
-			simpleName,
-		)),
-		0750,
-	))
-
-	// restart
-	logs.Print(ioutil.WriteFile(
-		restart,
-		[]byte(fmt.Sprintf(templateRestartConsole, simpleName, stop, start, simpleName)),
-		0750,
-	))
 }
 /* End Console File */
 /* --------------------------------------------------------- */

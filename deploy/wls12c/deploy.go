@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"encoding/json"
 	"path/filepath"
+	"time"
 )
 
 type Wls12c struct {
@@ -270,38 +271,50 @@ func rm(names ...string) {
 /* Begin Console File */
 
 const templateDeployConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s deploy..."
 %s %s
 echo "%s deployed, pls wating 30 sec..."
 `
 const templateUndeployConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s undeploy..."
 %s %s
 echo "%s undeployed, pls wating 30 sec..."
 `
 const templateRedeployConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s redeploy..."
 %s %s
 echo "%s redeployed, pls wating 30 sec..."
 `
 
 const templateStartApplicationsConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s start applications..."
 %s %s
 echo "%s started applications, pls wating 30 sec..."
 `
 const templateStopApplicationsConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s stop applications..."
 %s %s
 echo "%s stoped applications, pls wating 30 sec..."
 `
 const templateUpdateApplicationsConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s update applications..."
 %s %s
 echo "%s updated applications, pls wating 30 sec..."
@@ -316,29 +329,40 @@ func (w *Wls12c) touchConsoleScript(wlst, dname, uname, rname, startAname, stopA
 	_startAname := filepath.Join(filepath.Join(w.ConsolePath, "application_start"), w.PkgName + "_start.sh")
 	_stopAname := filepath.Join(filepath.Join(w.ConsolePath, "application_stop"), w.PkgName + "_stop.sh")
 	//_updateAname := filepath.Join(filepath.Join(w.ConsolePath, "application_update"), w.PkgName + "_update.sh")
+	now := time.Now().String()
 	logs.Print(ioutil.WriteFile(
 		_dname,
-		[]byte(fmt.Sprintf(templateDeployConsole, w.PkgName, wlst, dname, w.PkgName)),
+		[]byte(fmt.Sprintf(templateDeployConsole,
+			now,
+			w.PkgName, wlst, dname, w.PkgName)),
 		0750,
 	))
 	logs.Print(ioutil.WriteFile(
 		_uname,
-		[]byte(fmt.Sprintf(templateUndeployConsole, w.PkgName, wlst, uname, w.PkgName)),
+		[]byte(fmt.Sprintf(templateUndeployConsole,
+			now,
+			w.PkgName, wlst, uname, w.PkgName)),
 		0750,
 	))
 	logs.Print(ioutil.WriteFile(
 		_rname,
-		[]byte(fmt.Sprintf(templateRedeployConsole, w.PkgName, wlst, rname, w.PkgName)),
+		[]byte(fmt.Sprintf(templateRedeployConsole,
+			now,
+			w.PkgName, wlst, rname, w.PkgName)),
 		0750,
 	))
 	logs.Print(ioutil.WriteFile(
 		_startAname,
-		[]byte(fmt.Sprintf(templateStartApplicationsConsole, w.PkgName, wlst, startAname, w.PkgName)),
+		[]byte(fmt.Sprintf(templateStartApplicationsConsole,
+			now,
+			w.PkgName, wlst, startAname, w.PkgName)),
 		0750,
 	))
 	logs.Print(ioutil.WriteFile(
 		_stopAname,
-		[]byte(fmt.Sprintf(templateStopApplicationsConsole, w.PkgName, wlst, stopAname, w.PkgName)),
+		[]byte(fmt.Sprintf(templateStopApplicationsConsole,
+			now,
+			w.PkgName, wlst, stopAname, w.PkgName)),
 		0750,
 	))
 	//logs.Print(ioutil.WriteFile(

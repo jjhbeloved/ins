@@ -25,11 +25,11 @@ type Tomcat struct {
 	JAVA_HOME          string       `json:"java_home"`
 	APR_HOME           string       `json:"apr_home"`
 	APR_UTIL_HOME      string       `json:"apr_util_home"`
-	OPENSSL_HOME       string       `json:"openssl_home"`	// optional
+	OPENSSL_HOME       string       `json:"openssl_home"` // optional
 	TOMCAT_NATIVE_PKG  string       `json:"tomcat_native_pkg"`
 	APR_PKG            string       `json:"apr_pkg"`
 	APR_UTIL_PKG       string       `json:"apr_util_pkg"`
-	OPENSSL_PKG        string       `json:"openssl_pkg"`	// optional
+	OPENSSL_PKG        string       `json:"openssl_pkg"`  // optional
 }
 
 func (w *Tomcat) Json(bs []byte) error {
@@ -42,23 +42,47 @@ func (tomcat *Tomcat) Install() error {
 		return err
 	}
 
-	dir, _ := filepath.Abs(filepath.Dir(tomcat.TOMCAT_HOME))
 	suffix := filepath.Base(fileinfo.Name())
-	var name string
 	var file *os.File
 	var ezz error
 	var cmd *exec.Cmd
+	uncompress := filepath.Join(utils.TMPD, "uncompress.sh")
+	defer os.Remove(uncompress)
 	if strings.HasSuffix(suffix, TAR_GZ) {
-		name, err = utils.UnTarGz(tomcat.Pkg, dir, tomcat.IsRemove, false)
+		//name, err = utils.UnTarGz(tomcat.Pkg, dir, tomcat.IsRemove, false)
+		// copy
+		logs.Print(ioutil.WriteFile(
+			uncompress,
+			[]byte(fmt.Sprintf(tarTomcatPkg,
+				tomcat.TOMCAT_HOME,
+				tomcat.Pkg, tomcat.TOMCAT_HOME,
+			)),
+			0750,
+		))
 	} else if strings.HasSuffix(suffix, ZIP) {
-		name, err = utils.Unzip(tomcat.Pkg, dir, tomcat.IsRemove)
+		//name, err = utils.Unzip(tomcat.Pkg, dir, tomcat.IsRemove)
+		// copy
+		logs.Print(ioutil.WriteFile(
+			uncompress,
+			[]byte(fmt.Sprintf(unzipTomcatPkg,
+				tomcat.TOMCAT_HOME,
+				tomcat.Pkg, tomcat.TOMCAT_HOME,
+			)),
+			0750,
+		))
 	} else {
 		return fmt.Errorf("%s is not exists.", tomcat.Pkg)
 	}
 	if err != nil {
 		return err
 	}
-	err = os.Rename(filepath.Join(dir, name), tomcat.TOMCAT_HOME)
+	// 根据模板生成domain
+	cmd = exec.Command("sh", uncompress)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return err
+	}
 	_, ezz = os.Stat(tomcat.APR_PKG)
 	if ezz != nil {
 		goto over
@@ -83,7 +107,7 @@ func (tomcat *Tomcat) Install() error {
 	os.MkdirAll(utils.TMPD, 0750)
 	file, _ = utils.TempFile(utils.TMPD, "install_tomcat_", 0750)
 	file.Close()
-	if len(tomcat.OPENSSL_PKG) <=0 || len(tomcat.OPENSSL_HOME)<=0 {
+	if len(tomcat.OPENSSL_PKG) <= 0 || len(tomcat.OPENSSL_HOME) <= 0 {
 		// start
 		logs.Print(ioutil.WriteFile(
 			file.Name(),
@@ -196,4 +220,14 @@ cd /tmp/tomcat-native-src/jni/native
 sh configure --prefix=%s --with-apr=%s --with-ssl=yes --with-java-home=%s
 make -j4 && make install
 rm -rf /tmp/tomcat-native-src/
+`
+
+const tarTomcatPkg = `#!/bin/bash
+mkdir -p %s
+tar xzf %s -C %s --strip-components=1
+`
+
+const unzipTomcatPkg = `#!/bin/bash
+mkdir -p %s
+unzip %s -d %s
 `

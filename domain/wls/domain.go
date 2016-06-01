@@ -9,6 +9,7 @@ import (
 	"asiainfo.com/ins/logs"
 	"asiainfo.com/ins/utils"
 	"path/filepath"
+	"time"
 )
 
 type Wls12c struct {
@@ -150,19 +151,25 @@ func (w *Wls12c) touchNonPasswdRun() error {
 /* Begin Console File */
 
 const templateStartConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s admin starting..."
 nohup %s/bin/startWebLogic.sh 1>>%s/servers/AdminServer/logs/admin_auto.log 2>>%s/servers/AdminServer/logs/failedServer.log &
 echo "%s admin started, pls wating 30 sec..."
 `
 const templateStopConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s admin stoping..."
 %s/bin/stopWebLogic.sh
 echo "%s admin stoped, pls wating 30 sec..."
 `
 const templateRestartConsole = `#!/bin/bash
-
+########################################
+# AUTO CREATE BY XIAOXIAO INS %s
+########################################
 echo "%s admin restarting..."
 %s
 %s
@@ -181,10 +188,13 @@ func (w *Wls12c) touchConsoleScript() {
 	start := filepath.Join(w.ConsolePath, "start", "start_" + domainName + ".sh")
 	stop := filepath.Join(w.ConsolePath, "stop", "stop_" + domainName + ".sh")
 	restart := filepath.Join(w.ConsolePath, "restart", "restart_" + domainName + ".sh")
+	now := time.Now().String()
 	// start
 	logs.Print(ioutil.WriteFile(
 		start,
-		[]byte(fmt.Sprintf(templateStartConsole, domainName, w.DomainPath, w.DomainPath, w.DomainPath, domainName)),
+		[]byte(fmt.Sprintf(templateStartConsole,
+			now,
+			domainName, w.DomainPath, w.DomainPath, w.DomainPath, domainName)),
 		0750,
 	))
 
@@ -192,14 +202,18 @@ func (w *Wls12c) touchConsoleScript() {
 	// stop
 	logs.Print(ioutil.WriteFile(
 		stop,
-		[]byte(fmt.Sprintf(templateStopConsole, domainName, domainName)),
+		[]byte(fmt.Sprintf(templateStopConsole,
+			now,
+			domainName, domainName)),
 		0750,
 	))
 
 	// restart
 	logs.Print(ioutil.WriteFile(
 		restart,
-		[]byte(fmt.Sprintf(templateRestartConsole, domainName, stop, start, domainName)),
+		[]byte(fmt.Sprintf(templateRestartConsole,
+			now,
+			domainName, stop, start, domainName)),
 		0750,
 	))
 }

@@ -1,0 +1,26 @@
+{
+  "jdkHome": "/veris/odc/app/jdk",
+  "tomcatHome": "/veris/odc/app/tomcat7",
+  "app_home": "/veris/odc/install/webapps/cache",
+  "nativeHome": "/veris/odc/install/tomcat-native",
+  "protocol": "org.apache.coyote.http11.Http11AprProtocol",
+  "sharedLoader": "/veris/odc/properties",
+  "domainPath": "/veris/odc/install",
+  "serverName": "cache",
+  "servers": [
+    {
+      "version": "1",
+      "listenPort": "8315",
+      "shutdownPort": "8316"
+    },
+    {
+      "version": "2",
+      "listenPort": "8317",
+      "shutdownPort": "8318"
+    }
+  ],
+  "timeout": "10",
+  "jvm": "-Xmx512m -Xms512m -XX:MaxPermSize=128m -XX:PermSize=128m -Xmn128M",
+  "option": "ADD",
+  "consolePath": "/veris/odc/install/console"
+}

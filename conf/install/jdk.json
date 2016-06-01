@@ -1,0 +1,5 @@
+{
+  "pkg" : "/veris/odc/install/jdk/jdk_1.7.0_17.tar.gz",
+  "jdk_home" : "/veris/odc/app/jdk7",
+  "isRoot" : false
+}
