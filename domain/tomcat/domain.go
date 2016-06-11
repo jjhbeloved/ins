@@ -16,12 +16,12 @@ import (
 type Tomcat struct {
 	TOMCAT_HOME  string        `json:"tomcatHome"`
 	NATIVE_HOME  string        `json:"nativeHome"`
-	APP_HOME     string        `json:"app_home"`
 	JDK_HOME     string        `json:"jdkHome"`
 	ServerLoader string        `json:"serverLoader"`
 	SharedLoader string        `json:"sharedLoader"`
 	DomainPath   string        `json:"domainPath"`
-	ServerName   string        `json:"serverName"`
+	AliasName    string        `json:"aliasName"`
+	Apps         []App        `json:"apps"`
 	Servers      []Server      `json:"servers"`
 	Protocol     string        `json:"protocol"`
 	JVM          string        `json:"jvm"`
@@ -35,6 +35,11 @@ type Server struct {
 	ListenAddr   string        `json:"listenAddr"`
 	ListenPort   string        `json:"listenPort"`
 	ShutdownPort string        `json:"shutdownPort"`
+}
+
+type App struct {
+	AppName  []string      `json:"appName"`
+	APP_HOME string        `json:"app_home"`
 }
 
 func (w *Tomcat) Json(bs []byte) error {
@@ -124,6 +129,7 @@ const templateServerXml = `<?xml version='1.0' encoding='utf-8'?>
       </Realm>
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true">
+            %s
             <Context path="%s" docBase="%s" reloadable="false" crossContext="true" allowLinking="true"/>
       </Host>
     </Engine>
@@ -142,7 +148,7 @@ cp -r %s %s
  */
 func (tomcat *Tomcat) touchConf(server Server) {
 
-	fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, server.Version)
+	fullName := filepath.Join(tomcat.DomainPath, tomcat.AliasName, server.Version)
 	catalinaProperties := filepath.Join(fullName, "conf", "catalina.properties")
 	serverXml := filepath.Join(fullName, "conf", "server.xml")
 	protocol := "org.apache.coyote.http11.Http11NioProtocol"
@@ -159,13 +165,17 @@ func (tomcat *Tomcat) touchConf(server Server) {
 		)),
 		0750,
 	))
+	var servers string
+	for _, app := range tomcat.Apps {
+		servers += fmt.Sprintf(`<Context path="%s" docBase="%s" reloadable="false" crossContext="true" allowLinking="true"/>\n`, "/" + app.AppName, app.APP_HOME);
+	}
 	// serverXml
 	logs.Print(ioutil.WriteFile(
 		serverXml,
 		[]byte(fmt.Sprintf(templateServerXml,
 			server.ShutdownPort,
 			server.ListenPort, protocol,
-			"/" + tomcat.ServerName, tomcat.APP_HOME,
+			servers,
 		)),
 		0750,
 	))
@@ -179,7 +189,7 @@ func (tomcat *Tomcat) shell() error {
 		os.MkdirAll(utils.TMPD, 0750)
 		tmp := filepath.Join(utils.TMPD, "exec.sh")
 		sourceConf := filepath.Join(tomcat.TOMCAT_HOME, "conf")
-		fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, server.Version)
+		fullName := filepath.Join(tomcat.DomainPath, tomcat.AliasName, server.Version)
 		targetConf := filepath.Join(fullName, "conf")
 		targetTemp := filepath.Join(fullName, "temp")
 		targetLogs := filepath.Join(fullName, "logs")
@@ -268,11 +278,11 @@ func (tomcat *Tomcat) touchConsoleScript() {
 	}
 	for _, server := range tomcat.Servers {
 		//srvpath := filepath.Join(tomcat.DomainPath, tomcat.ServerName, tomcat.Version)
-		simpleName := tomcat.ServerName + server.Version
+		simpleName := tomcat.AliasName + server.Version
 		start := filepath.Join(tomcat.ConsolePath, "start", "start_" + simpleName + ".sh")
 		stop := filepath.Join(tomcat.ConsolePath, "stop", "stop_" + simpleName + ".sh")
 		restart := filepath.Join(tomcat.ConsolePath, "restart", "restart_" + simpleName + ".sh")
-		fullName := filepath.Join(tomcat.DomainPath, tomcat.ServerName, server.Version)
+		fullName := filepath.Join(tomcat.DomainPath, tomcat.AliasName, server.Version)
 		nativeLib := filepath.Join(tomcat.NATIVE_HOME, "lib")
 		now := time.Now().String()
 

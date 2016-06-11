@@ -1,0 +1,30 @@
+{
+  "redis_name": "a",
+  "redis_base": "/veris/odc/install/redis",
+  "redis_home": "/veris/odc/install/xxx",
+  "daemonize": true,
+  "ips": [
+    "10.1.245.185"
+  ],
+  "port": 17002,
+  "dbDir": "/veris/odc/install/xxx/17002/db",
+  "maxClientCon": 4096,
+  "maxMemory": "419430400",
+  "sentinel": {
+    "isMaster" : false,
+    "ip": "10.1.245.185",
+    "port": 17003,
+    "Dir": "/veris/odc/install/xxx/17002/db",
+    "masterName": "amd1",
+    "masterIP": "10.1.245.185",
+    "masterPort": 17000,
+    "parallelSyncs": 1,
+    "downTime": "10000",
+    "failoverTime": "180000",
+    "quorum": 2
+  },
+  "isCluster": false,
+  "type": "ha",
+  "consolePath": "/veris/odc/install/console",
+  "option": "ADD"
+}

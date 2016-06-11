@@ -8,6 +8,8 @@ import (
 	"asiainfo.com/ins/logs"
 	"path/filepath"
 	"asiainfo.com/ins/domain/tomcat"
+	"asiainfo.com/ins/domain/redis"
+	"strings"
 )
 
 /**
@@ -30,8 +32,7 @@ func chs1() {
 		fn := filepath.Join(ins_path, key)
 		var dom Domain
 		var option string
-		switch key {
-		case cli.WLS12CCONF:
+		if strings.Contains(key, cli.WLS12CPREFIX) {
 			var wls12 wls12c.Wls12c
 			bs, _ := ioutil.ReadFile(fn)
 			e := wls12.Json(bs)
@@ -41,7 +42,7 @@ func chs1() {
 			}
 			dom = &wls12
 			option = wls12.Option
-		case cli.TOMCATCONF:
+		} else if strings.Contains(key, cli.TOMCATPREFIX) {
 			var tomcat tomcat.Tomcat
 			bs, _ := ioutil.ReadFile(fn)
 			e := tomcat.Json(bs)
@@ -51,7 +52,17 @@ func chs1() {
 			}
 			dom = &tomcat
 			option = tomcat.Option
-		default:
+		} else if strings.Contains(key, cli.REDISPREFIX) {
+			var redis redis.Redis
+			bs, _ := ioutil.ReadFile(fn)
+			e := redis.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			dom = &redis
+			option = redis.Option
+		} else {
 			dom = nil
 			continue
 		}

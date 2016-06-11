@@ -10,6 +10,9 @@ import (
 	"asiainfo.com/ins/install/tomcat"
 	"asiainfo.com/ins/install/jdk"
 	"asiainfo.com/ins/install/memcached"
+	"asiainfo.com/ins/install/amq"
+	"asiainfo.com/ins/install/zookeeper"
+	"asiainfo.com/ins/install/redis"
 )
 
 func init()  {
@@ -18,6 +21,7 @@ func init()  {
 
 /**
 * go build -o install /veris/odc/app/go/3rd/src/asiainfo.com/ins/install/install.go
+* go build -o install /install_apps/server/go/3rd/src/asiainfo.com/ins/install/install.go
 */
 func main()  {
 	chs2()
@@ -92,6 +96,33 @@ func chs2()  {
 				continue
 			}
 			ins = &mem
+		case cli.ACTIVEMQCONF:
+			var amq amq.AMQ
+			bs, _ := ioutil.ReadFile(fn)
+			e := amq.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			ins = &amq
+		case cli.ZKCONF:
+			var zk zookeeper.ZK
+			bs, _ := ioutil.ReadFile(fn)
+			e := zk.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			ins = &zk
+		case cli.REDISCONF:
+			var redis redis.Redis
+			bs, _ := ioutil.ReadFile(fn)
+			e := redis.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			ins = &redis
 		default:
 			ins = nil
 			continue

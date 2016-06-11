@@ -1,0 +1,8 @@
+{
+  "redis_pkg": "/veris/odc/install/redis_src/redis-3.2.0.tar.gz",
+  "redis_home": "/veris/odc/install/redis",
+  "ruby_pkg": "/veris/odc/install/redis_src/ruby-2.3.1.tar.gz",
+  "ruby_home": "/veris/odc/install/redis/ruby",
+  "gems_pkg": "/veris/odc/install/redis_src/redis-3.3.0.gem",
+  "isCluster": true
+}

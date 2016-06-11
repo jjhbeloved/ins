@@ -1,0 +1,19 @@
+{
+  "zk_name" : "z1",
+  "zk_pkg" : "/veris/odc/install/zookeeper/zookeeper-3.4.8.tar.gz",
+  "zk_home" : "/veris/odc/install/zk",
+  "id" : 1,
+  "dataDir" : "/veris/odc/install/zk/db",
+  "clientPort" : "2181",
+  "maxClientCnxns" : "60",
+  "clusters" : [
+    {
+      "name" : "server1",
+      "address" : "10.1.245.185:2888:3888"
+    }
+  ],
+  "snapRetainCount" : "3",
+  "purgeInterval" : "1",
+  "consolePath" : "/veris/odc/install/console",
+  "jvm" : "-Xmx2048M -Xms2048M -XX:MaxPermSize=128m -XX:PermSize=32m"
+}

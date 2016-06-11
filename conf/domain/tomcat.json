@@ -1,12 +1,20 @@
 {
   "jdkHome": "/veris/odc/app/jdk",
   "tomcatHome": "/veris/odc/app/tomcat7",
-  "app_home": "/veris/odc/install/webapps/cache",
   "nativeHome": "/veris/odc/install/tomcat-native",
   "protocol": "org.apache.coyote.http11.Http11AprProtocol",
   "sharedLoader": "/veris/odc/properties",
   "domainPath": "/veris/odc/install",
-  "serverName": "cache",
+  "aliasName": "cache",
+  "apps" : [
+    {
+      "appName" : "cache",
+      "app_home" : "/veris/odc/install/webapps/cache"
+    }, {
+      "appName" : "task",
+      "app_home" : "/veris/odc/install/webapps/task"
+    },
+  ],
   "servers": [
     {
       "version": "1",

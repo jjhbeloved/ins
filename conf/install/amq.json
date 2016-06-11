@@ -1,0 +1,15 @@
+{
+  "amq_pkg": "/veris/odc/install/amq_src/apache-activemq-5.13.3-bin.tar.gz",
+  "amq_home": "/veris/odc/install/amq",
+  "heap_size": 2048,
+  "mq_name": "q1",
+  "multicastAddr": "224.1.2.3:6255",
+  "groupName": "humbird",
+  "listenAddr": "0.0.0.0:61616",
+  "consolePath": "/veris/odc/install/console",
+  "adminName": "admin",
+  "adminPWD": "admin",
+  "userName": "user",
+  "userPWD": "user",
+  "webPort": "8161"
+}
