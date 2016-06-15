@@ -32,7 +32,7 @@ func chs1() {
 		fn := filepath.Join(ins_path, key)
 		var dom Domain
 		var option string
-		if strings.Contains(key, cli.WLS12CPREFIX) {
+		if strings.HasPrefix(key, cli.WLS12CPREFIX) {
 			var wls12 wls12c.Wls12c
 			bs, _ := ioutil.ReadFile(fn)
 			e := wls12.Json(bs)
@@ -42,7 +42,7 @@ func chs1() {
 			}
 			dom = &wls12
 			option = wls12.Option
-		} else if strings.Contains(key, cli.TOMCATPREFIX) {
+		} else if strings.HasPrefix(key, cli.TOMCATPREFIX) {
 			var tomcat tomcat.Tomcat
 			bs, _ := ioutil.ReadFile(fn)
 			e := tomcat.Json(bs)
@@ -52,7 +52,7 @@ func chs1() {
 			}
 			dom = &tomcat
 			option = tomcat.Option
-		} else if strings.Contains(key, cli.REDISPREFIX) {
+		} else if strings.HasPrefix(key, cli.REDISPREFIX) {
 			var redis redis.Redis
 			bs, _ := ioutil.ReadFile(fn)
 			e := redis.Json(bs)

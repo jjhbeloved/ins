@@ -21,7 +21,7 @@
     "parallelSyncs": 1,
     "downTime": "10000",
     "failoverTime": "180000",
-    "quorum": 2
+    "quorum": 1
   },
   "isCluster": false,
   "type": "ha",

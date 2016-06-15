@@ -12,6 +12,7 @@ const (
 	REDIS string = "REDIS"
 	ACTIVEMQ string = "ACTIVEMQ"
 	ZK string = "ZK"
+	STORM string = "STORM"
 
 	WLS12CCONF string = "wls12c.json"
 	WLS11GCONF string = "wls11g.json"
@@ -21,6 +22,7 @@ const (
 	REDISCONF string = "redis.json"
 	ACTIVEMQCONF string = "amq.json"
 	ZKCONF string = "zk.json"
+	STORMCONF string = "storm.json"
 
 	WLS12CPREFIX string = "wls12c"
 	WLS11GPREFIX string = "wls11g"
@@ -30,6 +32,7 @@ const (
 	REDISPREFIX string = "redis"
 	ACTIVEMQPREFIX string = "amq"
 	ZKPREFIX string = "zk"
+	STORMPREFIX string = "storm"
 )
 
 var CONF_PATH = utils.GetParentDirectory(utils.GetCurrPath()) + "/conf/install.conf"

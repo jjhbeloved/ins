@@ -1,0 +1,17 @@
+{
+  "redis_name": "c2",
+  "redis_base": "/veris/odc/install/redis",
+  "redis_home": "/veris/odc/install/xxx",
+  "daemonize": true,
+  "ips": [
+    "10.1.245.185"
+  ],
+  "port": 17010,
+  "dbDir": "/veris/odc/install/xxx/17010/db",
+  "maxClientCon": 4096,
+  "maxMemory": "419430400",
+  "type": "cluster",
+  "isCluster": true,
+  "consolePath": "/veris/odc/install/console",
+  "option": "ADD"
+}

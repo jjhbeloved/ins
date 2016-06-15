@@ -323,6 +323,11 @@ func (redis *Redis) touchConf() {
 			0750,
 		))
 	case "cluster":
+		break
+	case "singleton":
+		break
+	default:
+
 	}
 	// _redisConf
 	logs.Print(ioutil.WriteFile(
@@ -479,6 +484,12 @@ func (redis *Redis) touchConsoleScript() {
 				redis.Redis_Name, stopSen, startSen, redis.Redis_Name)),
 			0750,
 		))
+	case "cluster":
+		break
+	case "singleton":
+		break
+	default:
+
 	}
 }
 /* End Console File */

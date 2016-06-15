@@ -52,6 +52,23 @@ func TrimLeftRightSpace(str string) string {
 	return strings.TrimRight(strings.TrimLeft(str, " "), " ")
 }
 
+/*
+Copyfile 拷贝文件
+ */
+func CopyFile(dstName, srcName string) (written int64, err error) {
+	src, err := os.Open(srcName)
+	if err != nil {
+		return
+	}
+	defer src.Close()
+	dst, err := os.OpenFile(dstName, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, 0644)
+	if err != nil {
+		return
+	}
+	defer dst.Close()
+	return io.Copy(dst, src)
+}
+
 /**
  * 列出目录下所有文件, 不递归
  */

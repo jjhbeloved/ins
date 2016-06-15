@@ -13,7 +13,7 @@
     }, {
       "appName" : "task",
       "app_home" : "/veris/odc/install/webapps/task"
-    },
+    }
   ],
   "servers": [
     {

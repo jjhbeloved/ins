@@ -21,7 +21,7 @@ type Tomcat struct {
 	SharedLoader string        `json:"sharedLoader"`
 	DomainPath   string        `json:"domainPath"`
 	AliasName    string        `json:"aliasName"`
-	Apps         []App        `json:"apps"`
+	Apps         []App         `json:"apps"`
 	Servers      []Server      `json:"servers"`
 	Protocol     string        `json:"protocol"`
 	JVM          string        `json:"jvm"`
@@ -38,7 +38,7 @@ type Server struct {
 }
 
 type App struct {
-	AppName  []string      `json:"appName"`
+	AppName  string      `json:"appName"`
 	APP_HOME string        `json:"app_home"`
 }
 
@@ -129,8 +129,7 @@ const templateServerXml = `<?xml version='1.0' encoding='utf-8'?>
       </Realm>
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true">
-            %s
-            <Context path="%s" docBase="%s" reloadable="false" crossContext="true" allowLinking="true"/>
+%s
       </Host>
     </Engine>
   </Service>
@@ -167,7 +166,7 @@ func (tomcat *Tomcat) touchConf(server Server) {
 	))
 	var servers string
 	for _, app := range tomcat.Apps {
-		servers += fmt.Sprintf(`<Context path="%s" docBase="%s" reloadable="false" crossContext="true" allowLinking="true"/>\n`, "/" + app.AppName, app.APP_HOME);
+		servers += fmt.Sprintf("<Context path=\"%s\" docBase=\"%s\" reloadable=\"false\" crossContext=\"true\" allowLinking=\"true\"/>\n", "/" + app.AppName, app.APP_HOME);
 	}
 	// serverXml
 	logs.Print(ioutil.WriteFile(

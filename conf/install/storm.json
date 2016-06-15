@@ -1,0 +1,33 @@
+{
+  "storm_name" : "storm1",
+  "storm_pkg": "/veris/odc/install/storm_src/apache-storm-1.0.1.tar.gz",
+  "storm_home": "/veris/odc/install/storm",
+  "zks": [
+    "10.1.234.149"
+  ],
+  "zkPort": 9201,
+  "zkDir": "/teststorm",
+  "mode": "distributed",
+  "nimbusHA": [
+    "10.1.245.185",
+    "10.1.245.185"
+  ],
+  "stormDataDir": "/veris/odc/install/storm/data",
+  "stormLogDir": "/veris/odc/install/storm/logs",
+  "slotsPorts": [
+    16701,
+    16702
+  ],
+  "workerHeap": 512,
+  "workerJVM": "-Xmx512M -Xms512M -XX:MaxPermSize=128m -XX:PermSize=32m",
+  "uiHost": "10.1.245.185",
+  "uiPort": 16710,
+  "uiJVM": "-Xmx256M -Xms256M -XX:MaxPermSize=128m -XX:PermSize=32m",
+  "topoMSGTime": 60,
+  "rmLibs": [
+    "log4j-over-slf4j-1.6.6.jar"
+  ],
+  "stormYaml": "",
+  "option": "ADD",
+  "consolePath": "/veris/odc/install/console"
+}

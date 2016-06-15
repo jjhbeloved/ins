@@ -13,6 +13,8 @@ import (
 	"asiainfo.com/ins/install/amq"
 	"asiainfo.com/ins/install/zookeeper"
 	"asiainfo.com/ins/install/redis"
+	"asiainfo.com/ins/install/storm"
+	"os"
 )
 
 func init()  {
@@ -42,13 +44,13 @@ func chs1()  {
 			continue
 		}
 	}
-
 }
 
 /**
  * 遍历配置目录, 遍历安装符合条件的文件
  */
 func chs2()  {
+	os.Mkdir(utils.TMPD, 0750)
 	ins_path := filepath.Join(cli.CONF_HOME, "install")
 	fs, err := utils.GetAllFiles(ins_path)
 	if err != nil {
@@ -123,6 +125,15 @@ func chs2()  {
 				continue
 			}
 			ins = &redis
+		case cli.STORMCONF:
+			var storm storm.Storm
+			bs, _ := ioutil.ReadFile(fn)
+			e := storm.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			ins = &storm
 		default:
 			ins = nil
 			continue
