@@ -12,32 +12,20 @@ import (
 	"time"
 )
 
-type Storm struct {
-	Storm_Name   string       `json:"storm_name"`
-	Storm_PKG    string       `json:"storm_pkg"`
-	Storm_HOME   string       `json:"storm_home"`
+type Hdfs struct {
+	Hdfs_Name    string       `json:"hdfs_name"`
+	Hdfs_PKG     string       `json:"hdfs_pkg"`
+	Hdfs_HOME    string       `json:"hdfs_home"`
+	JAVA_HOME    string       `json:"java_home"`
 	ZKs          []string     `json:"zks"`
 	ZKPort       int          `json:"zkPort"`
 	ZKDir        string       `json:"zkDir"`
-	Mode         string       `json:"mode"` // can be distributed or local
-	NimbusHA     []string     `json:"nimbusHA"`
-	StormDataDir string       `json:"stormDataDir"`
-	StormLogDir  string       `json:"stormLogDir"`
-	SlotsPorts   []int        `json:"slotsPorts"`
-	WorkerHeap   int          `json:"workerHeap"`
-	WorkerJVM    string       `json:"workerJVM"`
-	UIHost       string       `json:"uiHost"`
-	UIPort       int          `json:"uiPort"`
-	UIJVM        string       `json:"uiJVM"`
-	TopoMSGTime  int          `json:"topoMSGTime"`
-	RMlibs       []string     `json:"rmLibs"`
-	StormYaml    string       `json:"stormYaml"`
 	Option       string       `json:"option"`
 	ConsolePath  string       `json:"consolePath"`
 }
 
-func (storm *Storm) Json(bs []byte) error {
-	return json.Unmarshal(bs, &storm)
+func (hdfs *Hdfs) Json(bs []byte) error {
+	return json.Unmarshal(bs, &hdfs)
 }
 
 const installStorm = `#!/bin/bash
@@ -48,8 +36,7 @@ mkdir -p %s
 tar xzf %s -C %s --strip-components=1
 cd %s
 %s
-cd ../
-rm -rf examples examples-mapreduce1
+rm -rf ../examples
 mkdir -p %s %s
 `
 
@@ -101,7 +88,7 @@ storm.zookeeper.port: %d
 storm.zookeeper.root: "%s"
 
 storm.local.dir: "%s"
-storm.log.dir: "%s"
+storm.log.dir:  "%s"
 
 nimbus.seeds: [%s]
 

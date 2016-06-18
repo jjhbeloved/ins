@@ -1,5 +1,5 @@
 {
-  "redis_name": "a1",
+  "redis_name": "redis_a1",
   "redis_base": "/veris/odc/install/redis",
   "redis_home": "/veris/odc/install/xxx",
   "daemonize": true,

@@ -10,7 +10,7 @@
   "mode": "distributed",
   "nimbusHA": [
     "10.1.245.185",
-    "10.1.245.185"
+    "10.1.245.186"
   ],
   "stormDataDir": "/veris/odc/install/storm/data",
   "stormLogDir": "/veris/odc/install/storm/logs",

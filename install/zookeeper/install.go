@@ -45,6 +45,7 @@ mkdir -p %s
 tar xzf %s -C %s --strip-components=1
 cd %s
 mkdir -p dump logs %s
+echo %d > %s
 `
 
 func (zk *ZK) Install() error {
@@ -63,6 +64,7 @@ func (zk *ZK) Install() error {
 			zk.ZK_PKG, zk.ZK_HOME,
 			zk.ZK_HOME,
 			zk.DataDir,
+			zk.ID, filepath.Join(zk.DataDir, "myid"),
 		)),
 		0750,
 	))
