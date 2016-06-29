@@ -1,21 +1,22 @@
 package main
+
 import (
 	"asiainfo.com/ins/cli"
+	"asiainfo.com/ins/domain/redis"
+	"asiainfo.com/ins/domain/tomcat"
+	"asiainfo.com/ins/domain/wls"
+	"asiainfo.com/ins/logs"
 	"asiainfo.com/ins/utils"
 	"fmt"
-	"asiainfo.com/ins/domain/wls"
 	"io/ioutil"
-	"asiainfo.com/ins/logs"
 	"path/filepath"
-	"asiainfo.com/ins/domain/tomcat"
-	"asiainfo.com/ins/domain/redis"
 	"strings"
 )
 
 /**
 * go build -o domain /veris/odc/app/go/3rd/src/asiainfo.com/ins/domain/domain.go
-*/
-func main()  {
+ */
+func main() {
 	chs1()
 }
 

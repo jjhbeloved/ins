@@ -1,27 +1,27 @@
 package jdk
 
 import (
-	"os"
+	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
-	"fmt"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
-	"asiainfo.com/ins/logs"
-	"os/exec"
 	"time"
 )
 
 const (
 	TAR_GZ string = "tar.gz"
-	ZIP string = "zip"
+	ZIP    string = "zip"
 )
 
 type Jdk struct {
-	Pkg      string       `json:"pkg"`
-	JDK_HOME string       `json:"jdk_home"`
-	IsROOT   bool         `json:"isRoot"`
+	Pkg      string `json:"pkg"`
+	JDK_HOME string `json:"jdk_home"`
+	IsROOT   bool   `json:"isRoot"`
 }
 
 func (w *Jdk) Json(bs []byte) error {
@@ -74,7 +74,7 @@ func (jdk *Jdk) Install() error {
 		return err
 	}
 	if jdk.IsROOT && os.Getuid() == 0 {
-		bashrc := filepath.Join("/etc/bashrc");
+		bashrc := filepath.Join("/etc/bashrc")
 		utils.WriteFileA(
 			bashrc,
 			[]byte(fmt.Sprintf(javaEnv,
@@ -83,7 +83,7 @@ func (jdk *Jdk) Install() error {
 			0644,
 		)
 	} else {
-		bashrc := filepath.Join(os.Getenv("HOME"), ".bashrc");
+		bashrc := filepath.Join(os.Getenv("HOME"), ".bashrc")
 		utils.WriteFileA(
 			bashrc,
 			[]byte(fmt.Sprintf(javaEnv,

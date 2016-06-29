@@ -1,27 +1,27 @@
 package storm
 
 import (
-	"os"
-	"encoding/json"
-	"path/filepath"
-	"fmt"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
 	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 )
 
 type Hdfs struct {
-	Hdfs_Name    string       `json:"hdfs_name"`
-	Hdfs_PKG     string       `json:"hdfs_pkg"`
-	Hdfs_HOME    string       `json:"hdfs_home"`
-	JAVA_HOME    string       `json:"java_home"`
-	ZKs          []string     `json:"zks"`
-	ZKPort       int          `json:"zkPort"`
-	ZKDir        string       `json:"zkDir"`
-	Option       string       `json:"option"`
-	ConsolePath  string       `json:"consolePath"`
+	Hdfs_Name   string   `json:"hdfs_name"`
+	Hdfs_PKG    string   `json:"hdfs_pkg"`
+	Hdfs_HOME   string   `json:"hdfs_home"`
+	JAVA_HOME   string   `json:"java_home"`
+	ZKs         []string `json:"zks"`
+	ZKPort      int      `json:"zkPort"`
+	ZKDir       string   `json:"zkDir"`
+	Option      string   `json:"option"`
+	ConsolePath string   `json:"consolePath"`
 }
 
 func (hdfs *Hdfs) Json(bs []byte) error {
@@ -142,7 +142,6 @@ func (storm *Storm) touchConf() {
 				storm.WorkerHeap, storm.WorkerJVM,
 				storm.UIHost, storm.UIPort, storm.UIJVM,
 				storm.TopoMSGTime,
-
 			)),
 			0750,
 		))
@@ -218,12 +217,12 @@ func (storm *Storm) touchConsoleScript() {
 	if err != nil {
 		logs.Print(err)
 	}
-	startSupervisor := filepath.Join(storm.ConsolePath, "start", "start_supervisor_" + storm.Storm_Name + ".sh")
-	stopSupervisor := filepath.Join(storm.ConsolePath, "stop", "stop_supervisor_" + storm.Storm_Name + ".sh")
-	restartSupervisor := filepath.Join(storm.ConsolePath, "restart", "restart_supervisor_" + storm.Storm_Name + ".sh")
-	startNimbus := filepath.Join(storm.ConsolePath, "start", "start_nimbus_" + storm.Storm_Name + ".sh")
-	stopNimbus := filepath.Join(storm.ConsolePath, "stop", "stop_nimbus_" + storm.Storm_Name + ".sh")
-	restartNimbus := filepath.Join(storm.ConsolePath, "restart", "restart_nimbus_" + storm.Storm_Name + ".sh")
+	startSupervisor := filepath.Join(storm.ConsolePath, "start", "start_supervisor_"+storm.Storm_Name+".sh")
+	stopSupervisor := filepath.Join(storm.ConsolePath, "stop", "stop_supervisor_"+storm.Storm_Name+".sh")
+	restartSupervisor := filepath.Join(storm.ConsolePath, "restart", "restart_supervisor_"+storm.Storm_Name+".sh")
+	startNimbus := filepath.Join(storm.ConsolePath, "start", "start_nimbus_"+storm.Storm_Name+".sh")
+	stopNimbus := filepath.Join(storm.ConsolePath, "stop", "stop_nimbus_"+storm.Storm_Name+".sh")
+	restartNimbus := filepath.Join(storm.ConsolePath, "restart", "restart_nimbus_"+storm.Storm_Name+".sh")
 	now := time.Now().String()
 	// start
 	logs.Print(ioutil.WriteFile(

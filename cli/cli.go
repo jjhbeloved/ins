@@ -1,6 +1,6 @@
 package cli
-import (
-)
 
-func main()  {
+import ()
+
+func main() {
 }

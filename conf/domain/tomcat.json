@@ -6,13 +6,14 @@
   "sharedLoader": "/veris/odc/properties",
   "domainPath": "/veris/odc/install",
   "aliasName": "cache",
-  "apps" : [
+  "apps": [
     {
-      "appName" : "cache",
-      "app_home" : "/veris/odc/install/webapps/cache"
-    }, {
-      "appName" : "task",
-      "app_home" : "/veris/odc/install/webapps/task"
+      "appName": "cache",
+      "app_home": "/veris/odc/install/webapps/cache"
+    },
+    {
+      "appName": "task",
+      "app_home": "/veris/odc/install/webapps/task"
     }
   ],
   "servers": [
@@ -29,6 +30,16 @@
   ],
   "timeout": "10",
   "jvm": "-Xmx512m -Xms512m -XX:MaxPermSize=128m -XX:PermSize=128m -Xmn128M",
+  "envs": [
+    {
+      "name": "PROPERTY_NAME_SPACE",
+      "value": "/cfg/DCN/T/1/cache"
+    },
+    {
+      "name": "CONNECT_STRING",
+      "value": "10.1.236.154:9201,10.1.236.155:9201,10.1.236.155:9201"
+    }
+  ],
   "option": "ADD",
   "consolePath": "/veris/odc/install/console"
 }

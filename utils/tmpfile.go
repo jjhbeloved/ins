@@ -1,11 +1,11 @@
 package utils
 
 import (
-	"sync"
 	"os"
-	"strconv"
-	"time"
 	"path/filepath"
+	"strconv"
+	"sync"
+	"time"
 )
 
 // Random number state.
@@ -30,7 +30,6 @@ func nextSuffix() string {
 	randmu.Unlock()
 	return strconv.Itoa(int(1e9 + r%1e9))[1:]
 }
-
 
 func TempFile(dir, prefix string, perm os.FileMode) (f *os.File, err error) {
 	if dir == "" {

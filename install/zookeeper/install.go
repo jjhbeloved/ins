@@ -1,31 +1,31 @@
 package zookeeper
 
 import (
-	"encoding/json"
-	"os"
-	"path/filepath"
-	"os/exec"
-	"time"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
 	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strconv"
+	"time"
 )
 
 type ZK struct {
-	ZK_Name         string       `json:"zk_name"`
-	ZK_PKG          string       `json:"zk_pkg"`
-	ZK_HOME         string       `json:"zk_home"`
-	ID              int          `json:"id"`
-	DataDir         string       `json:"dataDir"`
-	ClientPort      string       `json:"clientPort"`
-	MaxClientCnxns  string       `json:"maxClientCnxns"`
-	Clusters        []Cluster    `json:"clusters"`
-	SnapRetainCount string       `json:"snapRetainCount"`
-	PurgeInterval   string       `json:"purgeInterval"`
-	ConsolePath     string       `json:"consolePath"`
-	JVM             string       `json:"jvm"`
+	ZK_Name         string    `json:"zk_name"`
+	ZK_PKG          string    `json:"zk_pkg"`
+	ZK_HOME         string    `json:"zk_home"`
+	ID              int       `json:"id"`
+	DataDir         string    `json:"dataDir"`
+	ClientPort      string    `json:"clientPort"`
+	MaxClientCnxns  string    `json:"maxClientCnxns"`
+	Clusters        []Cluster `json:"clusters"`
+	SnapRetainCount string    `json:"snapRetainCount"`
+	PurgeInterval   string    `json:"purgeInterval"`
+	ConsolePath     string    `json:"consolePath"`
+	JVM             string    `json:"jvm"`
 }
 
 type Cluster struct {
@@ -81,7 +81,6 @@ func (zk *ZK) Install() error {
 	return nil
 
 }
-
 
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -206,6 +205,7 @@ cd ${ZOO_LOG_DIR}
 sleep 5s
 echo "%s stopped, pls wating 30 sec..."
 `
+
 /**
  * touch console file
  */
@@ -214,9 +214,9 @@ func (zk *ZK) touchConsoleScript() {
 	if err != nil {
 		logs.Print(err)
 	}
-	start := filepath.Join(zk.ConsolePath, "start", "start_" + zk.ZK_Name + ".sh")
-	stop := filepath.Join(zk.ConsolePath, "stop", "stop_" + zk.ZK_Name + ".sh")
-	restart := filepath.Join(zk.ConsolePath, "restart", "restart_" + zk.ZK_Name + ".sh")
+	start := filepath.Join(zk.ConsolePath, "start", "start_"+zk.ZK_Name+".sh")
+	stop := filepath.Join(zk.ConsolePath, "stop", "stop_"+zk.ZK_Name+".sh")
+	restart := filepath.Join(zk.ConsolePath, "restart", "restart_"+zk.ZK_Name+".sh")
 	myid := filepath.Join(zk.DataDir, "myid")
 	zkLogs := filepath.Join(zk.ZK_HOME, "logs")
 	zkConsole := filepath.Join(zk.ZK_HOME, "bin", "zkServer.sh")

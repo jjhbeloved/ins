@@ -1,28 +1,28 @@
 package wls12c
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"fmt"
-	"os/exec"
-	"os"
 	"asiainfo.com/ins/logs"
 	"asiainfo.com/ins/utils"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
 	"path/filepath"
 	"time"
 )
 
 type Wls12c struct {
-	WLS_HOME    string        `json:"wlsHome"`
-	ListenAddr  string        `json:"listenAddr"`
-	ListenPort  string        `json:"listenPort"`
-	UserName    string        `json:"userName"`
-	PassWord    string        `json:"passWord"`
-	Mode        string        `json:"mode"`
-	DomainPath  string        `json:"domainPath"`
-	JDK_HOME    string        `json:"jdkHome"`
-	Option      string        `json:"option"`
-	ConsolePath string        `json:"consolePath"`
+	WLS_HOME    string `json:"wlsHome"`
+	ListenAddr  string `json:"listenAddr"`
+	ListenPort  string `json:"listenPort"`
+	UserName    string `json:"userName"`
+	PassWord    string `json:"passWord"`
+	Mode        string `json:"mode"`
+	DomainPath  string `json:"domainPath"`
+	JDK_HOME    string `json:"jdkHome"`
+	Option      string `json:"option"`
+	ConsolePath string `json:"consolePath"`
 }
 
 func (w *Wls12c) Builder(str string) error {
@@ -67,6 +67,7 @@ func (w *Wls12c) Add() error {
 func (w *Wls12c) Remove() error {
 	return nil
 }
+
 /* End Method */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -89,12 +90,13 @@ setOption('OverwriteDomain', 'true')
 writeDomain('%s')
 closeTemplate()
 `
+
 /**
  * touch conf local file
  */
 func (w *Wls12c) touchConf() string {
 	os.MkdirAll(utils.TMPD, 0750)
-	file, err := ioutil.TempFile(utils.TMPD, "wls12c_domain_")//在DIR目录下创建tmp为文件名前缀的文件，获得file文件指针，DIR必须存在，否则创建不成功
+	file, err := ioutil.TempFile(utils.TMPD, "wls12c_domain_") //在DIR目录下创建tmp为文件名前缀的文件，获得file文件指针，DIR必须存在，否则创建不成功
 	defer file.Close()
 	if err != nil {
 		logs.Print(fmt.Errorf("create %s error.", file.Name()))
@@ -112,6 +114,7 @@ func (w *Wls12c) touchConf() string {
 
 	return file.Name()
 }
+
 /* End Configuration File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -124,14 +127,15 @@ const templateSec = `
 username=%s
 password=%s
 `
+
 /**
  * touch non password run file
  */
 func (w *Wls12c) touchNonPasswdRun() error {
 	adminPath := filepath.Join(w.DomainPath, "servers", "AdminServer")
-	adminSec := filepath.Join(adminPath ,"security")
-	adminLog := filepath.Join(adminPath ,"logs")
-	adminBoot := filepath.Join(adminPath ,"security", "boot.properties")
+	adminSec := filepath.Join(adminPath, "security")
+	adminLog := filepath.Join(adminPath, "logs")
+	adminBoot := filepath.Join(adminPath, "security", "boot.properties")
 
 	os.MkdirAll(adminSec, 0750)
 	os.MkdirAll(adminLog, 0755)
@@ -142,6 +146,7 @@ func (w *Wls12c) touchNonPasswdRun() error {
 		0600,
 	)
 }
+
 /* End Security File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -175,6 +180,7 @@ echo "%s admin restarting..."
 %s
 echo "%s admin restarted, pls wating 30 sec..."
 `
+
 /**
  * touch console file
  */
@@ -185,9 +191,9 @@ func (w *Wls12c) touchConsoleScript() {
 	}
 	domainName := utils.GetFileName(w.DomainPath)
 
-	start := filepath.Join(w.ConsolePath, "start", "start_" + domainName + ".sh")
-	stop := filepath.Join(w.ConsolePath, "stop", "stop_" + domainName + ".sh")
-	restart := filepath.Join(w.ConsolePath, "restart", "restart_" + domainName + ".sh")
+	start := filepath.Join(w.ConsolePath, "start", "start_"+domainName+".sh")
+	stop := filepath.Join(w.ConsolePath, "stop", "stop_"+domainName+".sh")
+	restart := filepath.Join(w.ConsolePath, "restart", "restart_"+domainName+".sh")
 	now := time.Now().String()
 	// start
 	logs.Print(ioutil.WriteFile(
@@ -197,7 +203,6 @@ func (w *Wls12c) touchConsoleScript() {
 			domainName, w.DomainPath, w.DomainPath, w.DomainPath, domainName)),
 		0750,
 	))
-
 
 	// stop
 	logs.Print(ioutil.WriteFile(
@@ -217,6 +222,7 @@ func (w *Wls12c) touchConsoleScript() {
 		0750,
 	))
 }
+
 /* End Console File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -229,12 +235,13 @@ func (w *Wls12c) touchConsoleScript() {
  */
 func (w *Wls12c) run() {
 	domainName := utils.GetFileName(w.DomainPath)
-	start := filepath.Join(w.ConsolePath, "start", "start_" + domainName + ".sh")
+	start := filepath.Join(w.ConsolePath, "start", "start_"+domainName+".sh")
 	cmd := exec.Command(start)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	logs.Print(cmd.Run())
 }
+
 /* End Run */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */

@@ -1,14 +1,14 @@
 package redis
 
 import (
-	"os"
-	"encoding/json"
-	"path/filepath"
-	"fmt"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
 	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 )
 
@@ -25,15 +25,15 @@ WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. Th
 To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root,
 and add it to your /etc/rc.local in order to retain the setting after a reboot.
 Redis must be restarted after THP is disabled.
- */
+*/
 
 type Redis struct {
-	Redis_PKG  string       `json:"redis_pkg"`
-	Redis_HOME string       `json:"redis_home"`
-	Ruby_PKG   string       `json:"ruby_pkg"`
-	Ruby_HOME  string       `json:"ruby_home"`
-	GEMS_PKG   string       `json:"gems_pkg"`
-	IsCluster  bool         `json:"isCluster"`
+	Redis_PKG  string `json:"redis_pkg"`
+	Redis_HOME string `json:"redis_home"`
+	Ruby_PKG   string `json:"ruby_pkg"`
+	Ruby_HOME  string `json:"ruby_home"`
+	GEMS_PKG   string `json:"gems_pkg"`
+	IsCluster  bool   `json:"isCluster"`
 }
 
 func (redis *Redis) Json(bs []byte) error {
@@ -119,7 +119,7 @@ func (redis *Redis) Install() error {
 				redis.Redis_HOME,
 				redis.Redis_HOME,
 				redis.Redis_HOME,
-				filepath.Join(redis.Redis_HOME + "-SRC", "src", "redis-trib.rb"),
+				filepath.Join(redis.Redis_HOME+"-SRC", "src", "redis-trib.rb"),
 				filepath.Join(redis.Ruby_HOME, "bin", "ruby"),
 				redis.Redis_HOME,
 			)),

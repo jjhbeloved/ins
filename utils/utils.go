@@ -1,10 +1,10 @@
 package utils
 
 import (
-	"path/filepath"
-	"os"
-	"strings"
 	"io"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 const TMPD = "/tmp/tmpgo_ins"
@@ -42,7 +42,7 @@ func GetParentDirectory(dir string) string {
  * 获取目录文件名
  */
 func GetFileName(dir string) string {
-	return substr(dir, strings.LastIndex(dir, "/") + 1, len(dir))
+	return substr(dir, strings.LastIndex(dir, "/")+1, len(dir))
 }
 
 /**
@@ -54,14 +54,14 @@ func TrimLeftRightSpace(str string) string {
 
 /*
 Copyfile 拷贝文件
- */
+*/
 func CopyFile(dstName, srcName string) (written int64, err error) {
 	src, err := os.Open(srcName)
 	if err != nil {
 		return
 	}
 	defer src.Close()
-	dst, err := os.OpenFile(dstName, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, 0644)
+	dst, err := os.OpenFile(dstName, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return
 	}
@@ -90,12 +90,11 @@ func GetAllFiles(dirs string) ([]os.FileInfo, error) {
 	return files, nil
 }
 
-
 // WriteFile writes data to a file named by filename.
 // If the file does not exist, WriteFile creates it with permissions perm;
 // otherwise WriteFile truncates it before writing.
 func WriteFileA(filename string, data []byte, perm os.FileMode) error {
-	f, err := os.OpenFile(filename, os.O_CREATE | os.O_APPEND | os.O_RDWR, perm)
+	f, err := os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_RDWR, perm)
 	if err != nil {
 		return err
 	}
@@ -129,4 +128,3 @@ func MkdirConsolesPath(base string) error {
 	}
 	return nil
 }
-

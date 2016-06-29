@@ -1,9 +1,10 @@
 package logs
+
 import (
-	"time"
-	"os"
-	"asiainfo.com/ins/utils"
 	"asiainfo.com/ins/cli"
+	"asiainfo.com/ins/utils"
+	"os"
+	"time"
 )
 
 func PrintInfoLog(fname, content string) error {

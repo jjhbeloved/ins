@@ -1,36 +1,36 @@
 package memcached
 
 import (
-	"os"
-	"encoding/json"
-	"path/filepath"
-	"fmt"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
 	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"os/exec"
-	"time"
+	"path/filepath"
 	"strconv"
+	"time"
 )
 
 const (
 	TAR_GZ string = "tar.gz"
-	ZIP string = "zip"
+	ZIP    string = "zip"
 )
 
 type Memcached struct {
-	Memcached_PKG     string       `json:"memcached_pkg"`
-	Libevent_PKG      string       `json:"libevent_pkg"`
-	Repcached_PATCH   string       `json:"repcached_patch"`
-	Memcached_HOME    string       `json:"memcached_home"`
-	Libevent_HOME     string       `json:"libevent_home"`
-	Port              string       `json:"port"`
-	Memory            string       `json:"memory"`
-	Connections       string       `json:"connections"`
-	RepecachedPort    string       `json:"repecachedPort"`
-	RepecachedAddress string       `json:"repecachedAddress"`
-	Option            string       `json:"option"`
-	ConsolePath       string       `json:"consolePath"`
+	Memcached_PKG     string `json:"memcached_pkg"`
+	Libevent_PKG      string `json:"libevent_pkg"`
+	Repcached_PATCH   string `json:"repcached_patch"`
+	Memcached_HOME    string `json:"memcached_home"`
+	Libevent_HOME     string `json:"libevent_home"`
+	Port              string `json:"port"`
+	Memory            string `json:"memory"`
+	Connections       string `json:"connections"`
+	RepecachedPort    string `json:"repecachedPort"`
+	RepecachedAddress string `json:"repecachedAddress"`
+	Option            string `json:"option"`
+	ConsolePath       string `json:"consolePath"`
 }
 
 func (w *Memcached) Json(bs []byte) error {
@@ -173,6 +173,7 @@ echo "memcached restarting..."
 %s
 echo "memcached restarted, pls wating 30 sec..."
 `
+
 /**
  * touch console file
  */
@@ -240,6 +241,7 @@ func (mem *Memcached) touchConsoleScript() {
 		0750,
 	))
 }
+
 /* End Console File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */

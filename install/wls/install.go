@@ -1,16 +1,16 @@
 package wls
 
 import (
-	"os/user"
-	"os/exec"
-	"os"
-	"strings"
+	"asiainfo.com/ins/logs"
 	"asiainfo.com/ins/utils"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"encoding/json"
-	"asiainfo.com/ins/logs"
+	"os"
+	"os/exec"
+	"os/user"
 	"path/filepath"
+	"strings"
 )
 
 /*
@@ -18,17 +18,17 @@ WLS12C = jdkHome:/veris/odc/app/jdk, invLoc:/veris/odc/app/oraInventory, rspFile
 */
 
 const (
-	jarLoc string = "jarLoc"
-	invLoc string = "invLoc"
+	jarLoc  string = "jarLoc"
+	invLoc  string = "invLoc"
 	rspFile string = "rspFile"
 	jdkHome string = "jdkHome"
 )
 
 type Wls12c struct {
-	JARLoc		string	`json:"jarLoc"`
-	InvLoc		string	`json:"invLoc"`
-	RspFile		string	`json:"rspFile"`
-	JDK_HOME	string	`json:"jdk_home"`
+	JARLoc   string `json:"jarLoc"`
+	InvLoc   string `json:"invLoc"`
+	RspFile  string `json:"rspFile"`
+	JDK_HOME string `json:"jdk_home"`
 }
 
 func (w *Wls12c) Builder(str string) error {
@@ -84,7 +84,7 @@ func (w *Wls12c) Install() error {
  */
 func touchInv(inv_loc, gname string) string {
 	os.MkdirAll(utils.TMPD, 0750)
-	file, err := ioutil.TempFile(utils.TMPD, "install_wls12c_")//在DIR目录下创建tmp为文件名前缀的文件，获得file文件指针，DIR必须存在，否则创建不成功
+	file, err := ioutil.TempFile(utils.TMPD, "install_wls12c_") //在DIR目录下创建tmp为文件名前缀的文件，获得file文件指针，DIR必须存在，否则创建不成功
 	defer file.Close()
 	if err != nil {
 		logs.Print(fmt.Errorf("create %s error.", file.Name()))

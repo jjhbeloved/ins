@@ -2,18 +2,17 @@ package main
 
 import (
 	"asiainfo.com/ins/cli"
+	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/server/wls12c"
 	"asiainfo.com/ins/utils"
 	"fmt"
-	"path/filepath"
 	"io/ioutil"
-	"asiainfo.com/ins/server/wls12c"
-	"asiainfo.com/ins/logs"
+	"path/filepath"
 )
-
 
 /**
 * go build -o server /veris/odc/app/go/3rd/src/asiainfo.com/ins/server/server.go
-*/
+ */
 func main() {
 	chs2()
 }

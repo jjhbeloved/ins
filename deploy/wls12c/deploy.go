@@ -1,27 +1,27 @@
 package wls12c
 
 import (
-	"io/ioutil"
-	"fmt"
 	"asiainfo.com/ins/logs"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
-	"encoding/json"
 	"path/filepath"
 	"time"
 )
 
 type Wls12c struct {
-	WLS_HOME    string        `json:"wlsHome"`
-	AdminAddr   string        `json:"adminAddr"`
-	AdminPort   string        `json:"adminPort"`
-	SrvName     string        `json:"srvName"`
-	UserName    string        `json:"userName"`
-	PassWord    string        `json:"passWord"`
-	PkgName     string        `json:"pkgName"`
-	PkgPath     string        `json:"pkgPath"`
-	Option      string        `json:"option"`
-	ConsolePath string        `json:"consolePath"`
+	WLS_HOME    string `json:"wlsHome"`
+	AdminAddr   string `json:"adminAddr"`
+	AdminPort   string `json:"adminPort"`
+	SrvName     string `json:"srvName"`
+	UserName    string `json:"userName"`
+	PassWord    string `json:"passWord"`
+	PkgName     string `json:"pkgName"`
+	PkgPath     string `json:"pkgPath"`
+	Option      string `json:"option"`
+	ConsolePath string `json:"consolePath"`
 }
 
 func (w *Wls12c) Json(bs []byte) error {
@@ -54,6 +54,7 @@ func (w *Wls12c) Add() error {
 func (w *Wls12c) Remove() error {
 	return nil
 }
+
 /* End Method */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -163,11 +164,11 @@ func (w *Wls12c) touchDeploy(wlst string) (string, error) {
 	os.MkdirAll(stopApplicationsConfDir, 0750)
 	//os.MkdirAll(updateApplicationsConfDir, 0750)
 
-	dname := filepath.Join(deployConfDir, w.PkgName + ".py")
-	uname := filepath.Join(undeployConfDir, w.PkgName + ".py")
-	rname := filepath.Join(redeployConfDir, w.PkgName + ".py")
-	startAname := filepath.Join(startApplicationsConfDir, w.PkgName + ".py")
-	stopAname := filepath.Join(stopApplicationsConfDir, w.PkgName + ".py")
+	dname := filepath.Join(deployConfDir, w.PkgName+".py")
+	uname := filepath.Join(undeployConfDir, w.PkgName+".py")
+	rname := filepath.Join(redeployConfDir, w.PkgName+".py")
+	startAname := filepath.Join(startApplicationsConfDir, w.PkgName+".py")
+	stopAname := filepath.Join(stopApplicationsConfDir, w.PkgName+".py")
 	//updateAname := filepath.Join(updateApplicationsConfDir, w.PkgName + ".py")
 	err := ioutil.WriteFile(
 		dname,
@@ -262,6 +263,7 @@ func rm(names ...string) {
 		os.Remove(name)
 	}
 }
+
 /* End Configuration File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -319,15 +321,16 @@ echo "%s update applications..."
 %s %s
 echo "%s updated applications, pls wating 30 sec..."
 `
+
 /**
  * touch console file
  */
 func (w *Wls12c) touchConsoleScript(wlst, dname, uname, rname, startAname, stopAname string) (string, string, string, string, string) {
-	_dname := filepath.Join(filepath.Join(w.ConsolePath, "deploy"), "deploy_" + w.PkgName + ".sh")
-	_uname := filepath.Join(filepath.Join(w.ConsolePath, "undeploy"), "undeploy_" + w.PkgName + ".sh")
-	_rname := filepath.Join(filepath.Join(w.ConsolePath, "redeploy"), "redeploy_" + w.PkgName + ".sh")
-	_startAname := filepath.Join(filepath.Join(w.ConsolePath, "application_start"), w.PkgName + "_start.sh")
-	_stopAname := filepath.Join(filepath.Join(w.ConsolePath, "application_stop"), w.PkgName + "_stop.sh")
+	_dname := filepath.Join(filepath.Join(w.ConsolePath, "deploy"), "deploy_"+w.PkgName+".sh")
+	_uname := filepath.Join(filepath.Join(w.ConsolePath, "undeploy"), "undeploy_"+w.PkgName+".sh")
+	_rname := filepath.Join(filepath.Join(w.ConsolePath, "redeploy"), "redeploy_"+w.PkgName+".sh")
+	_startAname := filepath.Join(filepath.Join(w.ConsolePath, "application_start"), w.PkgName+"_start.sh")
+	_stopAname := filepath.Join(filepath.Join(w.ConsolePath, "application_stop"), w.PkgName+"_stop.sh")
 	//_updateAname := filepath.Join(filepath.Join(w.ConsolePath, "application_update"), w.PkgName + "_update.sh")
 	now := time.Now().String()
 	logs.Print(ioutil.WriteFile(
@@ -372,7 +375,7 @@ func (w *Wls12c) touchConsoleScript(wlst, dname, uname, rname, startAname, stopA
 	//))
 	return _dname, _uname, _rname, _startAname, _stopAname
 }
+
 /* End Console File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
-

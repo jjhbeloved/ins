@@ -2,18 +2,17 @@ package main
 
 import (
 	"asiainfo.com/ins/cli"
+	"asiainfo.com/ins/deploy/wls12c"
+	"asiainfo.com/ins/logs"
 	"asiainfo.com/ins/utils"
 	"fmt"
-	"path/filepath"
 	"io/ioutil"
-	"asiainfo.com/ins/logs"
-	"asiainfo.com/ins/deploy/wls12c"
+	"path/filepath"
 )
-
 
 /**
 * go build -o deploy /veris/odc/app/go/3rd/src/asiainfo.com/ins/deploy/deploy.go
-*/
+ */
 func main() {
 	chs2()
 }

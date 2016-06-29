@@ -1,39 +1,40 @@
 package main
+
 import (
 	"asiainfo.com/ins/cli"
-	"fmt"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
-	"asiainfo.com/ins/logs"
-	"asiainfo.com/ins/install/wls"
-	"path/filepath"
-	"asiainfo.com/ins/install/tomcat"
+	"asiainfo.com/ins/install/amq"
 	"asiainfo.com/ins/install/jdk"
 	"asiainfo.com/ins/install/memcached"
-	"asiainfo.com/ins/install/amq"
-	"asiainfo.com/ins/install/zookeeper"
 	"asiainfo.com/ins/install/redis"
 	"asiainfo.com/ins/install/storm"
+	"asiainfo.com/ins/install/tomcat"
+	"asiainfo.com/ins/install/wls"
+	"asiainfo.com/ins/install/zookeeper"
+	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
+	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 )
 
-func init()  {
+func init() {
 	//cli.InitInstall()
 }
 
 /**
 * go build -o install /veris/odc/app/go/3rd/src/asiainfo.com/ins/install/install.go
 * go build -o install /install_apps/server/go/3rd/src/asiainfo.com/ins/install/install.go
-*/
-func main()  {
+ */
+func main() {
 	chs2()
 }
 
 /**
  * 遍历安装配置文档, 遍历安装
  */
-func chs1()  {
-	for key, val := range cli.Install{
+func chs1() {
+	for key, val := range cli.Install {
 		switch key {
 		case cli.WLS12C:
 			wls12 := &wls.Wls12c{}
@@ -49,7 +50,7 @@ func chs1()  {
 /**
  * 遍历配置目录, 遍历安装符合条件的文件
  */
-func chs2()  {
+func chs2() {
 	os.Mkdir(utils.TMPD, 0750)
 	ins_path := filepath.Join(cli.CONF_HOME, "install")
 	fs, err := utils.GetAllFiles(ins_path)

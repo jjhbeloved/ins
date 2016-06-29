@@ -1,45 +1,51 @@
 package tomcat
 
 import (
-	"encoding/json"
-	"path/filepath"
-	"io/ioutil"
-	"fmt"
-	"asiainfo.com/ins/utils"
 	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"time"
 )
 
 type Tomcat struct {
-	TOMCAT_HOME  string        `json:"tomcatHome"`
-	NATIVE_HOME  string        `json:"nativeHome"`
-	JDK_HOME     string        `json:"jdkHome"`
-	ServerLoader string        `json:"serverLoader"`
-	SharedLoader string        `json:"sharedLoader"`
-	DomainPath   string        `json:"domainPath"`
-	AliasName    string        `json:"aliasName"`
-	Apps         []App         `json:"apps"`
-	Servers      []Server      `json:"servers"`
-	Protocol     string        `json:"protocol"`
-	JVM          string        `json:"jvm"`
-	Timeout      string        `json:"timeout"`
-	Option       string        `json:"option"`
-	ConsolePath  string        `json:"consolePath"`
+	TOMCAT_HOME  string   `json:"tomcatHome"`
+	NATIVE_HOME  string   `json:"nativeHome"`
+	JDK_HOME     string   `json:"jdkHome"`
+	ServerLoader string   `json:"serverLoader"`
+	SharedLoader string   `json:"sharedLoader"`
+	DomainPath   string   `json:"domainPath"`
+	AliasName    string   `json:"aliasName"`
+	Apps         []App    `json:"apps"`
+	Servers      []Server `json:"servers"`
+	Protocol     string   `json:"protocol"`
+	JVM          string   `json:"jvm"`
+	Envs         []Env    `json:"envs"`
+	Timeout      string   `json:"timeout"`
+	Option       string   `json:"option"`
+	ConsolePath  string   `json:"consolePath"`
+}
+
+type Env struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
 }
 
 type Server struct {
-	Version      string        `json:"version"`
-	ListenAddr   string        `json:"listenAddr"`
-	ListenPort   string        `json:"listenPort"`
-	ShutdownPort string        `json:"shutdownPort"`
+	Version      string `json:"version"`
+	ListenAddr   string `json:"listenAddr"`
+	ListenPort   string `json:"listenPort"`
+	ShutdownPort string `json:"shutdownPort"`
 }
 
 type App struct {
-	AppName  string      `json:"appName"`
-	APP_HOME string        `json:"app_home"`
+	AppName  string `json:"appName"`
+	APP_HOME string `json:"app_home"`
 }
 
 func (w *Tomcat) Json(bs []byte) error {
@@ -166,7 +172,7 @@ func (tomcat *Tomcat) touchConf(server Server) {
 	))
 	var servers string
 	for _, app := range tomcat.Apps {
-		servers += fmt.Sprintf("<Context path=\"%s\" docBase=\"%s\" reloadable=\"false\" crossContext=\"true\" allowLinking=\"true\"/>\n", "/" + app.AppName, app.APP_HOME);
+		servers += fmt.Sprintf("<Context path=\"%s\" docBase=\"%s\" reloadable=\"false\" crossContext=\"true\" allowLinking=\"true\"/>\n", "/"+app.AppName, app.APP_HOME)
 	}
 	// serverXml
 	logs.Print(ioutil.WriteFile(
@@ -216,6 +222,7 @@ func (tomcat *Tomcat) shell() error {
 	}
 	return nil
 }
+
 /* End Configuration File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -228,6 +235,7 @@ const templateStartConsole = `#!/bin/bash
 # AUTO CREATE BY XIAOXIAO INS %s
 ########################################
 echo "%s starting..."
+%s
 CATALINA_HOME="%s"
 CATALINA_BASE="%s"
 JAVA_HOME="%s"
@@ -267,6 +275,7 @@ echo "%s restarting..."
 %s
 echo "%s restarted, pls wating 30 sec..."
 `
+
 /**
  * touch console file
  */
@@ -278,11 +287,12 @@ func (tomcat *Tomcat) touchConsoleScript() {
 	for _, server := range tomcat.Servers {
 		//srvpath := filepath.Join(tomcat.DomainPath, tomcat.ServerName, tomcat.Version)
 		simpleName := tomcat.AliasName + server.Version
-		start := filepath.Join(tomcat.ConsolePath, "start", "start_" + simpleName + ".sh")
-		stop := filepath.Join(tomcat.ConsolePath, "stop", "stop_" + simpleName + ".sh")
-		restart := filepath.Join(tomcat.ConsolePath, "restart", "restart_" + simpleName + ".sh")
+		start := filepath.Join(tomcat.ConsolePath, "start", "start_"+simpleName+".sh")
+		stop := filepath.Join(tomcat.ConsolePath, "stop", "stop_"+simpleName+".sh")
+		restart := filepath.Join(tomcat.ConsolePath, "restart", "restart_"+simpleName+".sh")
 		fullName := filepath.Join(tomcat.DomainPath, tomcat.AliasName, server.Version)
 		nativeLib := filepath.Join(tomcat.NATIVE_HOME, "lib")
+		var envs string
 		now := time.Now().String()
 
 		timeout := 10
@@ -293,6 +303,11 @@ func (tomcat *Tomcat) touchConsoleScript() {
 		if len(tomcat.JVM) > 0 {
 			jvm = tomcat.JVM
 		}
+		if len(tomcat.Envs) > 0 {
+			for _, env := range tomcat.Envs {
+				envs += fmt.Sprintf("export %s=%s\n", env.Name, env.Value)
+			}
+		}
 		// start
 		logs.Print(ioutil.WriteFile(
 			start,
@@ -300,6 +315,7 @@ func (tomcat *Tomcat) touchConsoleScript() {
 				templateStartConsole,
 				now,
 				simpleName,
+				envs,
 				tomcat.TOMCAT_HOME, fullName, tomcat.JDK_HOME,
 				jvm, nativeLib,
 				simpleName,
@@ -332,6 +348,7 @@ func (tomcat *Tomcat) touchConsoleScript() {
 		))
 	}
 }
+
 /* End Console File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */

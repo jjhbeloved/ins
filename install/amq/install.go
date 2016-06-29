@@ -1,32 +1,32 @@
 package amq
 
 import (
-	"encoding/json"
-	"os"
-	"path/filepath"
-	"os/exec"
-	"time"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
 	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strconv"
+	"time"
 )
 
 type AMQ struct {
-	AMQ_PKG       string       `json:"amq_pkg"`
-	AMQ_HOME      string       `json:"amq_home"`
-	HEAP_SIZE     int          `json:"heap_size"`
-	MQ_Name       string       `json:"mq_name"`
-	MulticastAddr string       `json:"multicastAddr"`
-	GroupName     string       `json:"groupName"`
-	ListenAddr    string       `json:"listenAddr"`
-	ConsolePath   string       `json:"consolePath"`
-	AdminName     string       `json:"adminName"`
-	AdminPWD      string       `json:"adminPWD"`
-	UserName      string       `json:"userName"`
-	UserPWD       string       `json:"userPWD"`
-	WebPort       string       `json:"webPort"`
+	AMQ_PKG       string `json:"amq_pkg"`
+	AMQ_HOME      string `json:"amq_home"`
+	HEAP_SIZE     int    `json:"heap_size"`
+	MQ_Name       string `json:"mq_name"`
+	MulticastAddr string `json:"multicastAddr"`
+	GroupName     string `json:"groupName"`
+	ListenAddr    string `json:"listenAddr"`
+	ConsolePath   string `json:"consolePath"`
+	AdminName     string `json:"adminName"`
+	AdminPWD      string `json:"adminPWD"`
+	UserName      string `json:"userName"`
+	UserPWD       string `json:"userPWD"`
+	WebPort       string `json:"webPort"`
 }
 
 func (w *AMQ) Json(bs []byte) error {
@@ -73,7 +73,6 @@ func (amq *AMQ) Install() error {
 	return nil
 
 }
-
 
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -510,7 +509,7 @@ func (amq *AMQ) touchConf() {
 	// wrapperConf
 	logs.Print(ioutil.WriteFile(
 		_wrapperConf,
-		[]byte(wrapperConf + fmt.Sprintf(wrapperConfA,
+		[]byte(wrapperConf+fmt.Sprintf(wrapperConfA,
 			amq.HEAP_SIZE,
 		)),
 		0750,
@@ -595,6 +594,7 @@ echo "%s stopping..."
 %s
 echo "%s stopped, pls wating 30 sec..."
 `
+
 /**
  * touch console file
  */
@@ -603,9 +603,9 @@ func (amq *AMQ) touchConsoleScript() {
 	if err != nil {
 		logs.Print(err)
 	}
-	start := filepath.Join(amq.ConsolePath, "start", "start_" + amq.MQ_Name + ".sh")
-	stop := filepath.Join(amq.ConsolePath, "stop", "stop_" + amq.MQ_Name + ".sh")
-	restart := filepath.Join(amq.ConsolePath, "restart", "restart_" + amq.MQ_Name + ".sh")
+	start := filepath.Join(amq.ConsolePath, "start", "start_"+amq.MQ_Name+".sh")
+	stop := filepath.Join(amq.ConsolePath, "stop", "stop_"+amq.MQ_Name+".sh")
+	restart := filepath.Join(amq.ConsolePath, "restart", "restart_"+amq.MQ_Name+".sh")
 	now := time.Now().String()
 	// start
 	logs.Print(ioutil.WriteFile(
@@ -613,7 +613,7 @@ func (amq *AMQ) touchConsoleScript() {
 		[]byte(fmt.Sprintf(templateStartConsole,
 			now,
 			amq.MQ_Name,
-			filepath.Join(amq.AMQ_HOME, "bin", "linux-x86-64", "activemq") + " start",
+			filepath.Join(amq.AMQ_HOME, "bin", "linux-x86-64", "activemq")+" start",
 			amq.MQ_Name,
 		)),
 		0750,
@@ -625,7 +625,7 @@ func (amq *AMQ) touchConsoleScript() {
 		[]byte(fmt.Sprintf(templateStopConsole,
 			now,
 			amq.MQ_Name,
-			filepath.Join(amq.AMQ_HOME, "bin", "linux-x86-64", "activemq") + " stop",
+			filepath.Join(amq.AMQ_HOME, "bin", "linux-x86-64", "activemq")+" stop",
 			amq.MQ_Name,
 		)),
 		0750,

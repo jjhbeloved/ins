@@ -1,16 +1,16 @@
 package utils
 
 import (
-	"compress/gzip"
 	"archive/tar"
-	"fmt"
-	"os"
-	"path/filepath"
-	"path"
-	"strings"
-	"io"
 	"archive/zip"
 	"compress/flate"
+	"compress/gzip"
+	"fmt"
+	"io"
+	"os"
+	"path"
+	"path/filepath"
+	"strings"
 )
 
 func Untar(tarball, target string) error {
@@ -38,7 +38,7 @@ func Untar(tarball, target string) error {
 			continue
 		}
 
-		file, err := os.OpenFile(path, os.O_CREATE | os.O_TRUNC | os.O_WRONLY, info.Mode())
+		file, err := os.OpenFile(path, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, info.Mode())
 		if err != nil {
 			return err
 		}
@@ -75,7 +75,7 @@ func UntarR(tarball, target string) error {
 			continue
 		}
 
-		file, err := os.OpenFile(target, os.O_CREATE | os.O_TRUNC | os.O_WRONLY, info.Mode())
+		file, err := os.OpenFile(target, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, info.Mode())
 		if err != nil {
 			return err
 		}
@@ -90,7 +90,7 @@ func UntarR(tarball, target string) error {
 
 /**
 如果使用 archive 就算变更了 .gz的文件名, 也会读取 .gz的时候保存的属性内的文件名
- */
+*/
 func GunzipL(source string, rm bool) (string, error) {
 	reader, err := os.Open(source)
 	if err != nil {
@@ -105,7 +105,7 @@ func GunzipL(source string, rm bool) (string, error) {
 	defer archive.Close()
 	dir, _ := filepath.Abs(filepath.Dir(source))
 	fi, _ := reader.Stat()
-	target := fi.Name()[0:len(fi.Name()) - 3]
+	target := fi.Name()[0 : len(fi.Name())-3]
 	//dir = filepath.Join(dir, archive.Name)
 	dir = filepath.Join(dir, target)
 
@@ -153,7 +153,7 @@ func UnTarGz(srcFilePath string, destDirPath string, rm, debug bool) (string, er
 		if hdr.Typeflag != tar.TypeDir {
 			// Get files from archive
 			// Create diretory before create file
-			os.MkdirAll(destDirPath + "/" + path.Dir(hdr.Name), os.ModePerm)
+			os.MkdirAll(destDirPath+"/"+path.Dir(hdr.Name), os.ModePerm)
 			// Write data to file
 			fw, err := os.Create(destDirPath + "/" + hdr.Name)
 			if err != nil {
@@ -185,7 +185,7 @@ func Zip(frm, dst string) error {
 		return err
 	}
 	defer zipfile.Close()
-	myzip := zip.NewWriter(zipfile)        // 用压缩器包装该缓冲
+	myzip := zip.NewWriter(zipfile) // 用压缩器包装该缓冲
 	myzip.RegisterCompressor(zip.Deflate, func(out io.Writer) (io.WriteCloser, error) {
 		return flate.NewWriter(out, flate.BestCompression)
 	})
@@ -257,7 +257,7 @@ func Unzip(frm, dst string, rm bool) (string, error) {
 			return "", err
 		}
 
-		targetFile, err := os.OpenFile(path, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, file.Mode())
+		targetFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
 		if err != nil {
 			fileReader.Close()
 			if targetFile != nil {

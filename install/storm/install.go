@@ -1,39 +1,39 @@
 package storm
 
 import (
-	"os"
-	"encoding/json"
-	"path/filepath"
-	"fmt"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
 	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 )
 
 type Storm struct {
-	Storm_Name   string       `json:"storm_name"`
-	Storm_PKG    string       `json:"storm_pkg"`
-	Storm_HOME   string       `json:"storm_home"`
-	ZKs          []string     `json:"zks"`
-	ZKPort       int          `json:"zkPort"`
-	ZKDir        string       `json:"zkDir"`
-	Mode         string       `json:"mode"` // can be distributed or local
-	NimbusHA     []string     `json:"nimbusHA"`
-	StormDataDir string       `json:"stormDataDir"`
-	StormLogDir  string       `json:"stormLogDir"`
-	SlotsPorts   []int        `json:"slotsPorts"`
-	WorkerHeap   int          `json:"workerHeap"`
-	WorkerJVM    string       `json:"workerJVM"`
-	UIHost       string       `json:"uiHost"`
-	UIPort       int          `json:"uiPort"`
-	UIJVM        string       `json:"uiJVM"`
-	TopoMSGTime  int          `json:"topoMSGTime"`
-	RMlibs       []string     `json:"rmLibs"`
-	StormYaml    string       `json:"stormYaml"`
-	Option       string       `json:"option"`
-	ConsolePath  string       `json:"consolePath"`
+	Storm_Name   string   `json:"storm_name"`
+	Storm_PKG    string   `json:"storm_pkg"`
+	Storm_HOME   string   `json:"storm_home"`
+	ZKs          []string `json:"zks"`
+	ZKPort       int      `json:"zkPort"`
+	ZKDir        string   `json:"zkDir"`
+	Mode         string   `json:"mode"` // can be distributed or local
+	NimbusHA     []string `json:"nimbusHA"`
+	StormDataDir string   `json:"stormDataDir"`
+	StormLogDir  string   `json:"stormLogDir"`
+	SlotsPorts   []int    `json:"slotsPorts"`
+	WorkerHeap   int      `json:"workerHeap"`
+	WorkerJVM    string   `json:"workerJVM"`
+	UIHost       string   `json:"uiHost"`
+	UIPort       int      `json:"uiPort"`
+	UIJVM        string   `json:"uiJVM"`
+	TopoMSGTime  int      `json:"topoMSGTime"`
+	RMlibs       []string `json:"rmLibs"`
+	StormYaml    string   `json:"stormYaml"`
+	Option       string   `json:"option"`
+	ConsolePath  string   `json:"consolePath"`
 }
 
 func (storm *Storm) Json(bs []byte) error {
@@ -155,7 +155,6 @@ func (storm *Storm) touchConf() {
 				storm.WorkerHeap, storm.WorkerJVM,
 				storm.UIHost, storm.UIPort, storm.UIJVM,
 				storm.TopoMSGTime,
-
 			)),
 			0750,
 		))
@@ -189,7 +188,7 @@ const templateStopSupervisorConsole = `#!/bin/bash
 # AUTO CREATE BY XIAOXIAO INS %s
 ########################################
 echo "stopping storm supervisor"
-ps -ef | grep storm| grep -v grep | grep supervisor | grep %s |awk '{print $2}' | xargs kill -15
+ps -ef | grep storm| grep -v grep | grep supervisor |awk '{print $2}' | xargs kill -15
 echo "stopped storm supervisor"
 `
 
@@ -231,12 +230,12 @@ func (storm *Storm) touchConsoleScript() {
 	if err != nil {
 		logs.Print(err)
 	}
-	startSupervisor := filepath.Join(storm.ConsolePath, "start", "start_supervisor_" + storm.Storm_Name + ".sh")
-	stopSupervisor := filepath.Join(storm.ConsolePath, "stop", "stop_supervisor_" + storm.Storm_Name + ".sh")
-	restartSupervisor := filepath.Join(storm.ConsolePath, "restart", "restart_supervisor_" + storm.Storm_Name + ".sh")
-	startNimbus := filepath.Join(storm.ConsolePath, "start", "start_nimbus_" + storm.Storm_Name + ".sh")
-	stopNimbus := filepath.Join(storm.ConsolePath, "stop", "stop_nimbus_" + storm.Storm_Name + ".sh")
-	restartNimbus := filepath.Join(storm.ConsolePath, "restart", "restart_nimbus_" + storm.Storm_Name + ".sh")
+	startSupervisor := filepath.Join(storm.ConsolePath, "start", "start_supervisor_"+storm.Storm_Name+".sh")
+	stopSupervisor := filepath.Join(storm.ConsolePath, "stop", "stop_supervisor_"+storm.Storm_Name+".sh")
+	restartSupervisor := filepath.Join(storm.ConsolePath, "restart", "restart_supervisor_"+storm.Storm_Name+".sh")
+	startNimbus := filepath.Join(storm.ConsolePath, "start", "start_nimbus_"+storm.Storm_Name+".sh")
+	stopNimbus := filepath.Join(storm.ConsolePath, "stop", "stop_nimbus_"+storm.Storm_Name+".sh")
+	restartNimbus := filepath.Join(storm.ConsolePath, "restart", "restart_nimbus_"+storm.Storm_Name+".sh")
 	now := time.Now().String()
 	// start
 	logs.Print(ioutil.WriteFile(

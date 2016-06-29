@@ -1,54 +1,54 @@
 package redis
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"fmt"
-	"os"
 	"asiainfo.com/ins/logs"
 	"asiainfo.com/ins/utils"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"path/filepath"
-	"time"
 	"strconv"
+	"time"
 )
 
 type Redis struct {
-	Redis_Name     string       `json:"redis_name"`
-	Redis_BASE     string       `json:"redis_base"`
-	Redis_HOME     string       `json:"redis_home"`
-	Daemonize      bool         `json:"daemonize"`
-	IPs            []string     `json:"ips"`
-	Port           int          `json:"port"`
-	DbDir          string       `json:"dbDir"`
-	SentinelServer Sentinel     `json:"sentinel"`
-	IsCluster      bool         `json:"isCluster"`
-	Type           string       `json:"type"`
-	Masters        []RedisServer`json:"masters"`
-	Slaves         []RedisServer`json:"slaves"`
-	MaxClientCon   int          `json:"maxClientCon"`
-	MaxMemory      string       `json:"maxMemory"`
-	ConsolePath    string       `json:"consolePath"`
-	Option         string       `json:"option"`
+	Redis_Name     string        `json:"redis_name"`
+	Redis_BASE     string        `json:"redis_base"`
+	Redis_HOME     string        `json:"redis_home"`
+	Daemonize      bool          `json:"daemonize"`
+	IPs            []string      `json:"ips"`
+	Port           int           `json:"port"`
+	DbDir          string        `json:"dbDir"`
+	SentinelServer Sentinel      `json:"sentinel"`
+	IsCluster      bool          `json:"isCluster"`
+	Type           string        `json:"type"`
+	Masters        []RedisServer `json:"masters"`
+	Slaves         []RedisServer `json:"slaves"`
+	MaxClientCon   int           `json:"maxClientCon"`
+	MaxMemory      string        `json:"maxMemory"`
+	ConsolePath    string        `json:"consolePath"`
+	Option         string        `json:"option"`
 }
 
 type RedisServer struct {
-	IP   string     `json:"ip"`
-	Port int        `json:"port"`
-	Flag bool       `json:"flag"`
+	IP   string `json:"ip"`
+	Port int    `json:"port"`
+	Flag bool   `json:"flag"`
 }
 
 type Sentinel struct {
-	IsMaster      bool 	`json:"isMaster"`
-	IP            string    `json:"ip"`
-	Port          int       `json:"port"`
-	Dir           string    `json:"dir"`
-	MasterName    string    `json:"masterName"`
-	MasterIP      string    `json:"masterIP"`
-	MasterPort    int       `json:"masterPort"`
-	ParallelSyncs int       `json:"parallelSyncs"`
-	DownTime      string    `json:"downTime"`
-	FailoverTime  string    `json:"failoverTime"`
-	Quorum        int       `json:"quorum"`
+	IsMaster      bool   `json:"isMaster"`
+	IP            string `json:"ip"`
+	Port          int    `json:"port"`
+	Dir           string `json:"dir"`
+	MasterName    string `json:"masterName"`
+	MasterIP      string `json:"masterIP"`
+	MasterPort    int    `json:"masterPort"`
+	ParallelSyncs int    `json:"parallelSyncs"`
+	DownTime      string `json:"downTime"`
+	FailoverTime  string `json:"failoverTime"`
+	Quorum        int    `json:"quorum"`
 }
 
 func (w *Redis) Json(bs []byte) error {
@@ -68,10 +68,10 @@ func (redis *Redis) Add() error {
 func (redis *Redis) Remove() error {
 	return nil
 }
+
 /* End Method */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
-
 
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
@@ -273,6 +273,7 @@ sentinel failover-timeout %s %s
 sentinel parallel-syncs %s %d
 sentinel down-after-milliseconds %s %s
 `
+
 /**
  * touch conf local file
  */
@@ -334,8 +335,8 @@ func (redis *Redis) touchConf() {
 		_redisConf,
 		[]byte(fmt.Sprintf(redisConf,
 			now,
-			ips, redis.Port, _daemonize, filepath.Join(_redisHome, redis.Redis_Name + ".pid"), filepath.Join(_redisLogDir, redis.Redis_Name + ".log"),
-			redis.Redis_Name + ".rdb", redis.DbDir,
+			ips, redis.Port, _daemonize, filepath.Join(_redisHome, redis.Redis_Name+".pid"), filepath.Join(_redisLogDir, redis.Redis_Name+".log"),
+			redis.Redis_Name+".rdb", redis.DbDir,
 			slaveof,
 			redis.MaxClientCon, redis.MaxMemory,
 			_clusterEnabled,
@@ -343,6 +344,7 @@ func (redis *Redis) touchConf() {
 		0750,
 	))
 }
+
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
 /* Begin Console File */
@@ -398,6 +400,7 @@ echo "%s admin restarting..."
 %s
 echo "%s admin restarted, pls wating 30 sec..."
 `
+
 /**
  * touch console file
  */
@@ -411,9 +414,9 @@ func (redis *Redis) touchConsoleScript() {
 	_sentinelServer := redis.SentinelServer
 	_redisHome := filepath.Join(redis.Redis_HOME, strconv.Itoa(redis.Port))
 	_redisConf := filepath.Join(_redisHome, "redis.conf")
-	start := filepath.Join(redis.ConsolePath, "start", "start_" + redis.Redis_Name + "_" + strconv.Itoa(redis.Port) + ".sh")
-	stop := filepath.Join(redis.ConsolePath, "stop", "stop_" + redis.Redis_Name + "_" + strconv.Itoa(redis.Port) + ".sh")
-	restart := filepath.Join(redis.ConsolePath, "restart", "restart_" + redis.Redis_Name + "_" + strconv.Itoa(redis.Port) + ".sh")
+	start := filepath.Join(redis.ConsolePath, "start", "start_"+redis.Redis_Name+"_"+strconv.Itoa(redis.Port)+".sh")
+	stop := filepath.Join(redis.ConsolePath, "stop", "stop_"+redis.Redis_Name+"_"+strconv.Itoa(redis.Port)+".sh")
+	restart := filepath.Join(redis.ConsolePath, "restart", "restart_"+redis.Redis_Name+"_"+strconv.Itoa(redis.Port)+".sh")
 	now := time.Now().String()
 	// start
 	logs.Print(ioutil.WriteFile(
@@ -450,10 +453,10 @@ func (redis *Redis) touchConsoleScript() {
 	case "ha":
 		os.MkdirAll(_sentinelServer.Dir, 0755)
 		_sentinelConf := filepath.Join(_redisHome, "sentinel.conf")
-		_sentinelLog := filepath.Join(_redisHome, "logs", "sentinel_" + redis.Redis_Name + ".log")
-		startSen := filepath.Join(redis.ConsolePath, "start", "start_" + redis.Redis_Name + "_sentinel_" + strconv.Itoa(redis.Port) + ".sh")
-		stopSen := filepath.Join(redis.ConsolePath, "stop", "stop_" + redis.Redis_Name + "_sentinel_" + strconv.Itoa(redis.Port) + ".sh")
-		restartSen := filepath.Join(redis.ConsolePath, "restart", "restart_" + redis.Redis_Name + "_sentinel_" + strconv.Itoa(redis.Port) + ".sh")
+		_sentinelLog := filepath.Join(_redisHome, "logs", "sentinel_"+redis.Redis_Name+".log")
+		startSen := filepath.Join(redis.ConsolePath, "start", "start_"+redis.Redis_Name+"_sentinel_"+strconv.Itoa(redis.Port)+".sh")
+		stopSen := filepath.Join(redis.ConsolePath, "stop", "stop_"+redis.Redis_Name+"_sentinel_"+strconv.Itoa(redis.Port)+".sh")
+		restartSen := filepath.Join(redis.ConsolePath, "restart", "restart_"+redis.Redis_Name+"_sentinel_"+strconv.Itoa(redis.Port)+".sh")
 		// start sen
 		logs.Print(ioutil.WriteFile(
 			startSen,
@@ -492,7 +495,7 @@ func (redis *Redis) touchConsoleScript() {
 
 	}
 }
+
 /* End Console File */
 /* --------------------------------------------------------- */
 /* --------------------------------------------------------- */
-

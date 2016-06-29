@@ -1,35 +1,35 @@
 package tomcat
 
 import (
-	"os"
+	"asiainfo.com/ins/logs"
+	"asiainfo.com/ins/utils"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
-	"fmt"
-	"asiainfo.com/ins/utils"
-	"io/ioutil"
-	"asiainfo.com/ins/logs"
-	"os/exec"
 )
 
 const (
 	TAR_GZ string = "tar.gz"
-	ZIP string = "zip"
+	ZIP    string = "zip"
 )
 
 type Tomcat struct {
-	TOMCAT_HOME        string       `json:"tomcat_home"`
-	Pkg                string       `json:"pkg"`
-	IsRemove           bool         `json:"isRemove"`
-	TOMCAT_NATIVE_HOME string       `json:"tomcat_native_home"`
-	JAVA_HOME          string       `json:"java_home"`
-	APR_HOME           string       `json:"apr_home"`
-	APR_UTIL_HOME      string       `json:"apr_util_home"`
-	OPENSSL_HOME       string       `json:"openssl_home"` // optional
-	TOMCAT_NATIVE_PKG  string       `json:"tomcat_native_pkg"`
-	APR_PKG            string       `json:"apr_pkg"`
-	APR_UTIL_PKG       string       `json:"apr_util_pkg"`
-	OPENSSL_PKG        string       `json:"openssl_pkg"`  // optional
+	TOMCAT_HOME        string `json:"tomcat_home"`
+	Pkg                string `json:"pkg"`
+	IsRemove           bool   `json:"isRemove"`
+	TOMCAT_NATIVE_HOME string `json:"tomcat_native_home"`
+	JAVA_HOME          string `json:"java_home"`
+	APR_HOME           string `json:"apr_home"`
+	APR_UTIL_HOME      string `json:"apr_util_home"`
+	OPENSSL_HOME       string `json:"openssl_home"` // optional
+	TOMCAT_NATIVE_PKG  string `json:"tomcat_native_pkg"`
+	APR_PKG            string `json:"apr_pkg"`
+	APR_UTIL_PKG       string `json:"apr_util_pkg"`
+	OPENSSL_PKG        string `json:"openssl_pkg"` // optional
 }
 
 func (w *Tomcat) Json(bs []byte) error {
@@ -164,7 +164,7 @@ func (tomcat *Tomcat) Install() error {
 		return err
 	}
 	os.Remove(file.Name())
-	over:
+over:
 	return err
 }
 
