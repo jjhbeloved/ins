@@ -19,14 +19,16 @@ Add new future about web ui and restful api for ins.
 - JDK insall support **root user** and **normal user**.
 - root user，will change ***/etc/bashrc***, 保证每个普通用户登录都会加载到这个环境变量.
 - normal user，will change ***${HOME}/.bashrc***, 这个修改只针对一个普通用户的环境变量.
+
 ---------------------------------------
 > - **root user**
+
 >> 1. user login
 >> 2. download dependency ***jdk_1.7.0_17.tar.gz*** (e.g.: 这个可以根据开源社区下载最新版)
 >> 3. create ***${app}/conf/install/jdk.json*** (e.g: required)
 >> 4. ***${app}/bin/install***$，wait...，JDK installed.
 >> 5. jdk 安装作为基础环境变量生效, 具体设置了哪些请参考 ***/etc/bashrc*** 文件
-```Bash
+```
 {
   "pkg" : "/veris/odc/install/src/jdk_1.7.0_17.tar.gz",
   "jdk_home" : "/usr/bin/jdk7",
@@ -38,6 +40,7 @@ Add new future about web ui and restful api for ins.
 >> - ***isRoot*** choose root=true/normal user=false mode
 
 > - **normal user**
+
 >> 1. user login
 >> 2. download dependency ***jdk_1.7.0_17.tar.gz*** (e.g.: 这个可以根据开源社区下载最新版)
 >> 3. create ***${app}/conf/install/jdk.json*** (e.g: required)
@@ -53,6 +56,7 @@ Add new future about web ui and restful api for ins.
 >> - ***pkg*** is JDK app pkg absolute path
 >> - ***jdk_home*** is ${JAVA_HOME} path
 >> - ***isRoot*** choose root=true/normal user=false mode
+
 ---------------------------------------
 **Restful API:**
 ```
@@ -63,8 +67,10 @@ curl -X POST --data-binary @jdk.json -H "Content-Type:application/json;charset=U
 - Memcached install have ***Alone Mode*** and ***HA*** Mode.
 - Memcached 开源社区本身并 ***no support HA replication Mode***, the ha mode 由开源社区提供，最新的patch维护在1.4.13版本. 其余版本的patch均为无效.
 - New Memcached version up to 1.4.25，此版本没有HA patch，需要由应用本身做多点写保证HA. 
+
 ---------------------------------------
 > - **Alone Mode**
+
 >> 1. download dependency ***libevent-2.0.22-stable.tar.gz, Memcached-1.4.25.tar.gz*** (e.g.: 这个可以根据开源社区下载最新版)
 >> 2. create ***${app}/conf/install/memcached.json*** (e.g: required)
 >> 3. ***${app}/bin/install***$，wait...，Memcached Alone installed.
@@ -93,6 +99,7 @@ curl -X POST --data-binary @jdk.json -H "Content-Type:application/json;charset=U
 >> - ***consolePath*** is be installed memcached, 自动启停脚本生产的路径, 此路径下会有start/restart/stop三个目录, 启动后memcached占用的资源是通过启停脚本自动生成的, 如果不通过启停脚本启动, 资源需要自己重新分配
 
 > - **HA Mode**
+
 >> 1. download dependency ***libevent-2.0.22-stable.tar.gz, Memcached-1.4.13.tar.gz, repcached-2.3.1-1.4.13.patch*** (e.g.: 这个可以根据开源社区下载最新版)
 >> 2. create ***${app}/conf/install/memcached.json*** (e.g: required)
 >> 3. ***${app}/bin/install***$，wait...，Memcached Alone installed.
@@ -125,6 +132,7 @@ curl -X POST --data-binary @jdk.json -H "Content-Type:application/json;charset=U
 >> - ***repecachedAddress*** is other memcached server address
 >> - ***option*** choose ADD install option, 暂时没有一键卸载功能
 >> - ***consolePath*** is be installed memcached, 自动启停脚本生产的路径, 此路径下会有start/restart/stop三个目录, 启动后memcached占用的资源是通过启停脚本自动生成的, 如果不通过启停脚本启动, 资源需要自己重新分配
+
 ---------------------------------------
 **Restful API:**
 ```
