@@ -10,6 +10,14 @@
     {
       "name" : "server1",
       "address" : "10.1.245.185:2888:3888"
+    },
+    {
+      "name" : "server2",
+      "address" : "10.1.245.186:2888:3888"
+    },
+    {
+      "name" : "server3",
+      "address" : "10.1.245.187:2888:3888"
     }
   ],
   "snapRetainCount" : "3",

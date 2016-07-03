@@ -1,0 +1,8 @@
+{
+  "mysql_name" : "o2p",
+  "mysql_home" : "/veris/odc/mysql",
+  "mysql_base" : "/veris/odc/mysql",
+  "port" : 3401,
+  "consolePath" : "/veris/odc/mysql/3401/db/scripts",
+  "option" : "ADD"
+}

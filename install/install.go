@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"asiainfo.com/ins/install/mysql"
 )
 
 func init() {
@@ -51,7 +52,7 @@ func chs1() {
  * 遍历配置目录, 遍历安装符合条件的文件
  */
 func chs2() {
-	os.Mkdir(utils.TMPD, 0750)
+	os.Mkdir(utils.TMPD, 0777)
 	ins_path := filepath.Join(cli.CONF_HOME, "install")
 	fs, err := utils.GetAllFiles(ins_path)
 	if err != nil {
@@ -135,6 +136,15 @@ func chs2() {
 				continue
 			}
 			ins = &storm
+		case cli.MYSQLCONF:
+			var mysql mysql.Mysql
+			bs, _ := ioutil.ReadFile(fn)
+			e := mysql.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			ins = &mysql
 		default:
 			ins = nil
 			continue

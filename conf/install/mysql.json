@@ -1,0 +1,5 @@
+{
+  "name": "mysql-5.6.31",
+  "mysql_pkg": "/veris/odc/install/src/mysql-5.6.31.tar.gz",
+  "mysql_home": "/veris/odc/mysql"
+}

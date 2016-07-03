@@ -1,0 +1,71 @@
+<div class="container">
+
+    <div class="page-header">
+        <h1>
+            <small>Domain List Info</small>
+        </h1>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <form class="form-inline" action="/domain/list" method="post">
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <select id="domain_option" name="DomainOption" class="selectpicker show-tick form-control"
+                                    data-live-search="false">
+                                <option value="domain_code">DomainCode</option>
+                                <option value="name">DomainName</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="search_value">SearchValue</label>
+                        <input type="text" class="form-control" name="SearchValue" id="search_value"
+                               value="{{.domain_code}}" placeholder="Search Value">
+                    </div>
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"
+                                                                        aria-hidden="true"></span></button>
+                </form>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>DomainCode</th>
+                    <th>DomainName</th>
+                    <th>Detail</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {{range $index,$element :=.domains}}
+                <tr>
+                    <td>{{$element.DomainCode}}</td>
+                    <td>{{$element.Name}}</td>
+                    <td><a type="button" href="/domain/info/{{$element.DomainCode}}"
+                           class="btn btn-default btn-sm"><span
+                            class="glyphicon  glyphicon-eye-open" aria-hidden="true"></span></a></td>
+                    <td><a type="button" href="/domain/edit/{{$element.DomainCode}}"
+                           class="btn btn-warning btn-sm"><span
+                            class="glyphicon  glyphicon-cog" aria-hidden="true"></span></a></td>
+                    <td><a type="button" att="{{$element.DomainCode}}" class="btn btn-danger btn-sm btn_delete"><span
+                            class="glyphicon  glyphicon-trash" aria-hidden="true"></span></a></td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="11">
+                        <span class="text-center">no domain record</span>
+                    </td>
+                </tr>
+                {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/domain/list.js"></script>

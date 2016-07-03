@@ -12,6 +12,15 @@ const DATE_DIR = "2006_01_02"
 const DATE_FILE = "2006_01_02T150405"
 
 /**
+panicif
+*/
+func PanicIf(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+/**
  * 获取当前文件执行的路径
  */
 func GetCurrPath() string {
@@ -42,7 +51,7 @@ func GetParentDirectory(dir string) string {
  * 获取目录文件名
  */
 func GetFileName(dir string) string {
-	return substr(dir, strings.LastIndex(dir, "/")+1, len(dir))
+	return substr(dir, strings.LastIndex(dir, "/") + 1, len(dir))
 }
 
 /**
@@ -61,7 +70,7 @@ func CopyFile(dstName, srcName string) (written int64, err error) {
 		return
 	}
 	defer src.Close()
-	dst, err := os.OpenFile(dstName, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	dst, err := os.OpenFile(dstName, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, 0644)
 	if err != nil {
 		return
 	}
@@ -94,7 +103,7 @@ func GetAllFiles(dirs string) ([]os.FileInfo, error) {
 // If the file does not exist, WriteFile creates it with permissions perm;
 // otherwise WriteFile truncates it before writing.
 func WriteFileA(filename string, data []byte, perm os.FileMode) error {
-	f, err := os.OpenFile(filename, os.O_CREATE|os.O_APPEND|os.O_RDWR, perm)
+	f, err := os.OpenFile(filename, os.O_CREATE | os.O_APPEND | os.O_RDWR, perm)
 	if err != nil {
 		return err
 	}

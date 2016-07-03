@@ -1,0 +1,113 @@
+<div class="container">
+
+    <div class="page-header">
+        <h1>
+            <small>Detail App Info</small>
+        </h1>
+    </div>
+
+    <form id="editForm" class="form-horizontal" role="form" action="/app/edit" method="post">
+        <input type="hidden" name="Id" value="{{.app.Id}}">
+        <div class="form-group">
+            <label for="ips" class="col-sm-2 control-label">Device Network:</label>
+            {{range $index,$element :=.ips}}
+            <div class="col-sm-4">
+                <label><input disabled type="checkbox" value="{{$element.DeviceIpv4}}">
+                    {{$element.Ipv4}}
+                </label>
+            </div>
+            {{end}}
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">Name:</label>
+            <div class="col-sm-4">
+                <input type="text" readonly class="form-control" id="name" name="Name" value="{{.app.Name}}"
+                       placeholder="required" autocomplete="off"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="type" class="col-sm-2 control-label">Type:</label>
+            <div class="col-sm-4">
+                <input type="text" readonly class="form-control" id="type" name="Type" value="{{.app.Type.Name}}"
+                       placeholder="required" autocomplete="off"/>
+            </div>
+        </div>
+        <div id="cronDiv" class="form-group">
+            <label for="version" class="col-sm-2 control-label">Version:</label>
+            <div class="col-sm-4">
+                <input type="text" readonly class="form-control" id="version" name="Version" value="{{.app.Version}}"
+                       placeholder="required" autocomplete="off"/>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="home" class="col-sm-2 control-label">Home:</label>
+            <div class="col-sm-4">
+                <input type="text" readonly class="form-control" id="home" name="Home" value="{{.app.Home}}"
+                       placeholder="required basic app home" autocomplete="off"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="activity" class="col-sm-2 control-label">Activity:</label>
+            <div class="col-sm-4">
+                <div class="radio radio-inline">
+                    <label>
+                        <input type="radio" value="0" id="activity" name="IsActivity" {{if .app.IsActivity }} checked
+                               {{end}}/>
+                        start
+                    </label>
+                </div>
+                <div class="radio radio-inline">
+                    <label>
+                        <input type="radio" value="1" name="IsActivity" {{if not .app.IsActivity }} checked {{end}}/>
+                        stop
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ips" class="col-sm-2 control-label">Listen Ips:</label>
+            <div class="col-sm-4">
+                <input type="text" readonly class="form-control" id="ips" name="Ips" value="{{.app.Ips}}"
+                       placeholder="more network and zero.." autocomplete="off"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ports" class="col-sm-2 control-label">Listen Ports:</label>
+            <div class="col-sm-4">
+                <input type="text" readonly class="form-control" id="ports" name="Ports" value="{{.app.Ports}}"
+                       placeholder="more port and zero..." autocomplete="off"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="checkUrl" class="col-sm-2 control-label">Check Url:</label>
+            <div class="col-sm-4">
+                <textarea readonly class="form-control col-sm-10" style="resize:none;" rows="5" id="checkUrl"
+                          name="CheckUrl" autocomplete="off"
+                          placeholder="check alive url or tcp"/>{{.app.CheckUrl}}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="checkRet" class="col-sm-2 control-label">Check Return:</label>
+            <div class="col-sm-4">
+                <input type="text" readonly class="form-control" id="checkRet" name="CheckRet" value="{{.app.CheckRet}}"
+                       placeholder="requird. 200 or I'm alive" autocomplete="off"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="updated" class="col-sm-2 control-label">Updated:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="updated" readonly name="Updated" value="{{.app.Updated}}"
+                       placeholder="last update date" autocomplete="off"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a id="backBtn" href="javascript:window.history.go(-1);" style="margin-left: 50px;">
+                    Back
+                </a>
+            </div>
+        </div>
+    </form>
+
+</div>

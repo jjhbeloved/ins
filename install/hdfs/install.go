@@ -1,4 +1,4 @@
-package storm
+package hdfs
 
 import (
 	"asiainfo.com/ins/logs"

@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"strings"
+	"asiainfo.com/ins/domain/mysql"
 )
 
 /**
@@ -63,6 +64,16 @@ func chs1() {
 			}
 			dom = &redis
 			option = redis.Option
+		} else if strings.HasPrefix(key, cli.MYSQLPREFIX) {
+			var mysql mysql.Mysql
+			bs, _ := ioutil.ReadFile(fn)
+			e := mysql.Json(bs)
+			if e != nil {
+				logs.PrintErrorLog(cli.LOGS_PATH, e.Error())
+				continue
+			}
+			dom = &mysql
+			option = mysql.Option
 		} else {
 			dom = nil
 			continue
