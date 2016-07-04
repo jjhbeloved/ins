@@ -22,7 +22,6 @@ const (
 
 func registerDB() {
 	orm.Debug = true
-	//orm.RegisterDriver("sqlite3", orm.DRSqlite);
 	orm.RegisterDataBase("default", DRIVER_NAME, DATA_SOURCE, MAX_IDLE_CONN, MAX_OPEN_CONN)
 	orm.RegisterModel(
 		new(oos.User), new(oos.App),

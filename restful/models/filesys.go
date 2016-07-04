@@ -3,7 +3,7 @@ package models
 import (
 	"errors"
 	"strconv"
-	"humbird.org/api/utils"
+	"asiainfo.com/ins/utils"
 )
 
 const FS = "local"

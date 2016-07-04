@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+	"asiainfo.com/ins/cli"
 )
 
 const (
@@ -29,6 +30,12 @@ func (w *Jdk) Json(bs []byte) error {
 }
 
 func (jdk *Jdk) Install() error {
+	pkg, err := utils.DownloadToDir(jdk.Pkg, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	jdk.Pkg = pkg
+
 	fileinfo, err := os.Stat(jdk.Pkg)
 	if err != nil {
 		return err

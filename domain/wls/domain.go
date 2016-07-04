@@ -1,4 +1,4 @@
-package wls12c
+package wls
 
 import (
 	"asiainfo.com/ins/logs"

@@ -28,15 +28,20 @@ func init() {
 				&controllers.InstallController{},
 			),
 		),
+		beego.NSNamespace("/domain",
+			beego.NSInclude(
+				&controllers.DomainController{},
+			),
+		),
 	)
 	app := beego.NewNamespace("/app",
 		beego.NSInclude(
-			&controllers.AppController{},
+			&controllers.ViewAppController{},
 		),
 	)
 	domain := beego.NewNamespace("/domain",
 		beego.NSInclude(
-			&controllers.DomainController{},
+			&controllers.ViewDomainController{},
 		),
 	)
 	beego.Router("/", &controllers.IndexController{}, "*:Index")

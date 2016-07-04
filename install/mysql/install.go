@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"time"
+	"asiainfo.com/ins/cli"
 )
 
 type Mysql struct {
@@ -38,7 +39,13 @@ cp %s/bin/mysqld %s/sbin
 `
 
 func (mysql *Mysql) Install() error {
-	_, err := os.Stat(mysql.MYSQL_PKG)
+	pkg, err := utils.DownloadToDir(mysql.MYSQL_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	mysql.MYSQL_PKG = pkg
+
+	_, err = os.Stat(mysql.MYSQL_PKG)
 	if err != nil {
 		return err
 	}

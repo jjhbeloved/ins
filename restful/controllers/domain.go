@@ -6,7 +6,7 @@ import (
 )
 
 // domain
-type DomainController struct {
+type ViewDomainController struct {
 	BaseController
 }
 
@@ -15,7 +15,7 @@ type DomainController struct {
 // @Success 200 {string} success
 // @Failure 400 Invalid input
 // @router /list [get]
-func (this *DomainController) List() {
+func (this *ViewDomainController) List() {
 	domains, _ := models.QueryAllDomain(0, -1)
 	this.Data["domains"] = domains
 	if len(domains) > 0 {
@@ -31,7 +31,7 @@ func (this *DomainController) List() {
 // @Success 200 {string} success
 // @Failure 400 Invalid input
 // @router /list [post]
-func (this *DomainController) PostList() {
+func (this *ViewDomainController) PostList() {
 	domainOption := this.GetString("DomainOption")
 	searchValue := this.GetString("SearchValue")
 	fmt.Println(domainOption)

@@ -6,7 +6,7 @@ import (
 )
 
 // app
-type AppController struct {
+type ViewAppController struct {
 	BaseController
 }
 
@@ -15,7 +15,7 @@ type AppController struct {
 // @Success 200 {string} success
 // @Failure 400 Invalid input
 // @router /list [get]
-func (this *AppController) List() {
+func (this *ViewAppController) List() {
 	apps, code, device, user := models.QueryAllAppView()
 	this.Data["apps"] = apps
 	this.Data["domain_code"] = code
@@ -30,7 +30,7 @@ func (this *AppController) List() {
 // @Success 200 {string} success
 // @Failure 400 Invalid input
 // @router /list [post]
-func (this *AppController) PostList() {
+func (this *ViewAppController) PostList() {
 	domainCode := this.GetString("DomainCode")
 	deviceName := this.GetString("DeviceHost")
 	userName := this.GetString("UserName")
@@ -48,7 +48,7 @@ func (this *AppController) PostList() {
 // @Success 200 {string} success
 // @Failure 400 Invalid input
 // @router /info/:id [get]
-func (this *AppController)Info() {
+func (this *ViewAppController)Info() {
 	id, err := this.GetInt(":id")
 	utils.PanicIf(err)
 	app, ips := models.QueryAppAndIP(id)
@@ -63,7 +63,7 @@ func (this *AppController)Info() {
 // @Success 200 {string} success
 // @Failure 400 Invalid input
 // @router /edit/:id [get]
-func (this *AppController)ToEdit() {
+func (this *ViewAppController)ToEdit() {
 	id, err := this.GetInt(":id")
 	utils.PanicIf(err)
 	app, ips := models.QueryAppAndIP(id)
@@ -78,7 +78,7 @@ func (this *AppController)ToEdit() {
 // @Success 200 {string} success
 // @Failure 400 Invalid input
 // @router /edit/:id [put]
-func (this *AppController)Edit() {
+func (this *ViewAppController)Edit() {
 	id, err := this.GetInt(":id")
 	utils.PanicIf(err)
 	app, ips := models.QueryAppAndIP(id)
@@ -94,7 +94,7 @@ func (this *AppController)Edit() {
 // @Success 200 {string} success
 // @Failure 400 Invalid input
 // @router /active [post]
-func (this *AppController) Active() {
+func (this *ViewAppController) Active() {
 	jsonRet := &models.RSP{}
 	_, err := this.GetInt("Id")
 	active, err := this.GetBool("active")

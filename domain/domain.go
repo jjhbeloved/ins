@@ -35,7 +35,7 @@ func chs1() {
 		var dom Domain
 		var option string
 		if strings.HasPrefix(key, cli.WLS12CPREFIX) {
-			var wls12 wls12c.Wls12c
+			var wls12 wls.Wls12c
 			bs, _ := ioutil.ReadFile(fn)
 			e := wls12.Json(bs)
 			if e != nil {

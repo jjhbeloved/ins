@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"time"
+	"asiainfo.com/ins/cli"
 )
 
 type AMQ struct {
@@ -43,7 +44,13 @@ cd %s
 `
 
 func (amq *AMQ) Install() error {
-	_, err := os.Stat(amq.AMQ_PKG)
+	pkg, err := utils.DownloadToDir(amq.AMQ_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	amq.AMQ_PKG = pkg
+
+	_, err = os.Stat(amq.AMQ_PKG)
 	if err != nil {
 		return err
 	}

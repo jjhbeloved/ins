@@ -11,6 +11,7 @@ import (
 	"os/user"
 	"path/filepath"
 	"strings"
+	"asiainfo.com/ins/cli"
 )
 
 /*
@@ -61,6 +62,12 @@ func (w *Wls12c) Json(bs []byte) error {
 }
 
 func (w *Wls12c) Install() error {
+	pkg, err := utils.DownloadToDir(w.JARLoc, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	w.JARLoc = pkg
+
 	java := filepath.Join(w.JDK_HOME, "bin", "java")
 	jvms := "-Xms512m"
 	jvmx := "-Xmx512m"

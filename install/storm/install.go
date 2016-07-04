@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"time"
+	"asiainfo.com/ins/cli"
 )
 
 type Storm struct {
@@ -54,7 +55,13 @@ mkdir -p %s %s
 `
 
 func (storm *Storm) Install() error {
-	_, err := os.Stat(storm.Storm_PKG)
+	pkg, err := utils.DownloadToDir(storm.Storm_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	storm.Storm_PKG = pkg
+
+	_, err = os.Stat(storm.Storm_PKG)
 	if err != nil {
 		return err
 	}

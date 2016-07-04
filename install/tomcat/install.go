@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"asiainfo.com/ins/cli"
 )
 
 const (
@@ -37,6 +38,27 @@ func (w *Tomcat) Json(bs []byte) error {
 }
 
 func (tomcat *Tomcat) Install() error {
+	pkg, err := utils.DownloadToDir(tomcat.Pkg, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	tomcat.Pkg = pkg
+	pkg, err = utils.DownloadToDir(tomcat.APR_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	tomcat.APR_PKG = pkg
+	pkg, err = utils.DownloadToDir(tomcat.APR_UTIL_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	tomcat.APR_UTIL_PKG = pkg
+	pkg, err = utils.DownloadToDir(tomcat.TOMCAT_NATIVE_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	tomcat.TOMCAT_NATIVE_PKG = pkg
+
 	fileinfo, err := os.Stat(tomcat.Pkg)
 	if err != nil {
 		return err
@@ -128,6 +150,11 @@ func (tomcat *Tomcat) Install() error {
 			0750,
 		))
 	} else {
+		pkg, err = utils.DownloadToDir(tomcat.OPENSSL_PKG, cli.PKG_PATH)
+		if err != nil {
+			return err
+		}
+		tomcat.OPENSSL_PKG = pkg
 		// start
 		logs.Print(ioutil.WriteFile(
 			file.Name(),

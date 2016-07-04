@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"time"
+	"asiainfo.com/ins/cli"
 )
 
 const (
@@ -38,7 +39,18 @@ func (w *Memcached) Json(bs []byte) error {
 }
 
 func (mem *Memcached) Install() error {
-	_, err := os.Stat(mem.Libevent_PKG)
+	pkg, err := utils.DownloadToDir(mem.Libevent_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	mem.Libevent_PKG = pkg
+	pkg, err = utils.DownloadToDir(mem.Memcached_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	mem.Memcached_PKG = pkg
+
+	_, err = os.Stat(mem.Libevent_PKG)
 	if err != nil {
 		return err
 	}
@@ -48,6 +60,12 @@ func (mem *Memcached) Install() error {
 	memcached := filepath.Join(utils.TMPD, "memcacheCreate.sh")
 	defer os.Remove(memcached)
 	if len(mem.Repcached_PATCH) > 0 {
+		pkg, err = utils.DownloadToDir(mem.Repcached_PATCH, cli.PKG_PATH)
+		if err != nil {
+			return err
+		}
+		mem.Repcached_PATCH = pkg
+
 		logs.Print(ioutil.WriteFile(
 			memcached,
 			[]byte(fmt.Sprintf(installMemcachedWithRepcached,

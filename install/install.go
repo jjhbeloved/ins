@@ -53,6 +53,8 @@ func chs1() {
  */
 func chs2() {
 	os.Mkdir(utils.TMPD, 0777)
+	os.Mkdir(cli.LOGS_PATH, 0750)
+	os.Mkdir(cli.PKG_PATH, 0750)
 	ins_path := filepath.Join(cli.CONF_HOME, "install")
 	fs, err := utils.GetAllFiles(ins_path)
 	if err != nil {

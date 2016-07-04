@@ -14,6 +14,8 @@ import (
 	"asiainfo.com/ins/cli"
 	"asiainfo.com/ins/restful/models"
 	"fmt"
+	"os"
+	"asiainfo.com/ins/utils"
 )
 
 type InstallController struct {
@@ -26,13 +28,16 @@ type InstallController struct {
 // @Failure 400 Invalid input
 // @router /:type [post]
 func (this *InstallController) Install() {
+	os.Mkdir(utils.TMPD, 0777)
+	os.Mkdir(cli.LOGS_PATH, 0750)
+	os.Mkdir(cli.PKG_PATH, 0750)
+
 	typ := this.GetString(":type")
 	body := this.Ctx.Input.RequestBody
-	fmt.Println(typ)
-	fmt.Println(body)
 	var ins Installer
 	var rsp map[string]*models.RSP
 	this.Ctx.Output.Status = 400
+
 	switch typ {
 	case cli.WLS12CCONF:
 		var wls12 wls.Wls12c

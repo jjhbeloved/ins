@@ -5,6 +5,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"crypto/md5"
+	"fmt"
+	"strconv"
+	"time"
+	rd "math/rand"
 )
 
 const TMPD = "/tmp/tmpgo_ins"
@@ -136,4 +141,17 @@ func MkdirConsolesPath(base string) error {
 		return err
 	}
 	return nil
+}
+
+func Md5(text string) string {
+	hashMd5 := md5.New()
+	io.WriteString(hashMd5, text)
+	return fmt.Sprintf("%x", hashMd5.Sum(nil))
+}
+
+func SessionId() string {
+	nano := time.Now().UnixNano()
+	rd.Seed(time.Now().UnixNano())
+	rndNum := rd.Int63()
+	return Md5(Md5(strconv.FormatInt(nano, 10)) + Md5(strconv.FormatInt(rndNum, 10)))
 }

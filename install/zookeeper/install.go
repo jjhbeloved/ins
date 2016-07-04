@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"time"
+	"asiainfo.com/ins/cli"
 )
 
 type ZK struct {
@@ -49,7 +50,13 @@ echo %d > %s
 `
 
 func (zk *ZK) Install() error {
-	_, err := os.Stat(zk.ZK_PKG)
+	pkg, err := utils.DownloadToDir(zk.ZK_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	zk.ZK_PKG = pkg
+
+	_, err = os.Stat(zk.ZK_PKG)
 	if err != nil {
 		return err
 	}

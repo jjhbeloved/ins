@@ -42,6 +42,7 @@ const (
 var CONF_PATH = utils.GetParentDirectory(utils.GetCurrPath()) + "/conf/install.conf"
 var CONF_HOME = utils.GetParentDirectory(utils.GetCurrPath()) + "/conf"
 var LOGS_PATH = utils.GetParentDirectory(utils.GetCurrPath()) + "/logs"
+var PKG_PATH = utils.GetParentDirectory(utils.GetCurrPath()) + "/pkg"
 
 var Install = make(map[string]string)
 

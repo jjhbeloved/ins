@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"time"
+	"asiainfo.com/ins/cli"
 )
 
 /*
@@ -80,7 +81,13 @@ rm -rf %s-SRC
 `
 
 func (redis *Redis) Install() error {
-	_, err := os.Stat(redis.Redis_PKG)
+	pkg, err := utils.DownloadToDir(redis.Redis_PKG, cli.PKG_PATH)
+	if err != nil {
+		return err
+	}
+	redis.Redis_PKG = pkg
+
+	_, err = os.Stat(redis.Redis_PKG)
 	if err != nil {
 		return err
 	}
@@ -104,6 +111,17 @@ func (redis *Redis) Install() error {
 			0750,
 		))
 	} else {
+		pkg, err = utils.DownloadToDir(redis.Ruby_PKG, cli.PKG_PATH)
+		if err != nil {
+			return err
+		}
+		redis.Ruby_PKG = pkg
+		pkg, err = utils.DownloadToDir(redis.GEMS_PKG, cli.PKG_PATH)
+		if err != nil {
+			return err
+		}
+		redis.GEMS_PKG = pkg
+
 		logs.Print(ioutil.WriteFile(
 			redisSh,
 			[]byte(fmt.Sprintf(installRedisCluster,
