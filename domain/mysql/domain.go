@@ -271,7 +271,8 @@ const templateRestartConsole = `#!/bin/bash
 ########################################
 # AUTO CREATE BY XIAOXIAO INS %s
 ########################################
-
+%s
+%s
 `
 
 /**

@@ -28,12 +28,10 @@ TestSuite = $.extend({}, TestSuite, {
 
 function onFormValid(e) {
     $('#msg').html('form ' + $(e.target).attr('id') + ' is valid');
-};
-
+}
 function onFormInvalid(e) {
     $('#msg').html('form ' + $(e.target).attr('id') + ' is invalid');
-};
-
+}
 describe('event form attribute callback global', function() {
     beforeEach(function() {
         $([
@@ -190,16 +188,13 @@ describe('event form programmatically', function() {
 
 function onEmailValid(e, data) {
     $('#msg').html(data.field + ' is valid');
-};
-
+}
 function onEmailInvalid(e, data) {
     $('#msg').html(data.field + ' is invalid');
-};
-
+}
 function onEmailStatus(e, data) {
     $('#status').html(data.status);
-};
-
+}
 describe('event field attribute callback global', function() {
     beforeEach(function() {
         $([
@@ -646,12 +641,10 @@ describe('event field trigger with events changed', function() {
 
 function onEmailAddressValidatorSuccess(e, data) {
     $('#msg').html(data.validator + ' validator passed');
-};
-
+}
 function onEmailAddressValidatorError(e, data) {
     $('#msg').html(data.validator + ' validator did not pass');
-};
-
+}
 describe('event validator declarative', function() {
     beforeEach(function() {
         $([

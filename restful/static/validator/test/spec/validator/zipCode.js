@@ -1,8 +1,7 @@
 function getCountryCode(value, validator, $field) {
     $('#msg').html('getCountryCode() called');
     return validator.getFieldElements('country').val();
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     ZipCode: {
         getCountryCode: function(value, validator, $field) {

@@ -42,11 +42,12 @@ func Untar(tarball, target string) error {
 		if err != nil {
 			return err
 		}
-		defer file.Close()
 		_, err = io.Copy(file, tarReader)
 		if err != nil {
+			file.Close()
 			return err
 		}
+		file.Close()
 	}
 	return nil
 }
@@ -79,11 +80,13 @@ func UntarR(tarball, target string) error {
 		if err != nil {
 			return err
 		}
-		defer file.Close()
+
 		_, err = io.Copy(file, tarReader)
 		if err != nil {
+			file.Close()
 			return err
 		}
+		file.Close()
 	}
 	return nil
 }

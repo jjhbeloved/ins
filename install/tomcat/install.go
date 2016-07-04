@@ -138,6 +138,7 @@ func (tomcat *Tomcat) Install() error {
 				tomcat.APR_PKG, tomcat.APR_HOME,
 				tomcat.APR_HOME,
 				tomcat.APR_HOME,
+				tomcat.APR_HOME,
 				tomcat.APR_UTIL_HOME,
 				tomcat.APR_UTIL_PKG, tomcat.APR_UTIL_HOME,
 				tomcat.APR_UTIL_HOME,

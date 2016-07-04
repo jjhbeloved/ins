@@ -1,8 +1,7 @@
 function validateCaptcha(value, validator, $field) {
     var items = $('#captchaOperation').html().split(' '), sum = parseInt(items[0]) + parseInt(items[2]);
     return value === sum + '';
-};
-
+}
 describe('callback', function() {
     beforeEach(function() {
         $([

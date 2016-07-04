@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="Sqlite (Xerial) - c.c" uuid="792d14ac-daad-4471-b3a5-546ffab7e0ab">
+    <database-info product="SQLite" version="3.8.11" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
+    <schema name="" catalog=""/>
+    <table name="app" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="type_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="version" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="home" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="ips" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="ports" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="check_url" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="check_ret" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="is_activity" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4" def="RkFMU0U="/>
+      <column name="updated" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="device_user" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="app_type" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="device" schema="" catalog="" type="TABLE">
+      <column name="domain_host" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="host" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="domain_code" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="memory" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="cpu" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="storage" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="os_type" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <primary-key columns="domain_host"/>
+    </table>
+    <table name="domain" schema="" catalog="" type="TABLE">
+      <column name="domain_code" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <primary-key columns="domain_code"/>
+    </table>
+    <table name="group" schema="" catalog="" type="TABLE">
+      <column name="device_gid" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="domain_host" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="gid" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key columns="device_gid"/>
+    </table>
+    <table name="group_name" schema="" catalog="" type="TABLE">
+      <column name="device_group" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="device_gid" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="device_group"/>
+    </table>
+    <table name="ip" schema="" catalog="" type="TABLE">
+      <column name="device_ipv4" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="domain_host" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="ipv4" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="ipv6" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <primary-key columns="device_ipv4"/>
+    </table>
+    <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
+      <column name="name" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="seq" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+    </table>
+    <table name="user" schema="" catalog="" type="TABLE">
+      <column name="device_uid" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="domain_host" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="uid" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="group_id" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="cert_path" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="updated" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="device_uid"/>
+    </table>
+  </data-source>
+</component>

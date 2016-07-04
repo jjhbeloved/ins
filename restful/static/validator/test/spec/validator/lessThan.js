@@ -2,8 +2,7 @@ function lessThanCompare() {
     var compareTo = $('#lessThanForm').find('[name="maxAge"]').val();
     $('#msg').html('lessThanCompare() called; compare to ' + compareTo);
     return compareTo;
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     lessThan: {
         compareTo: function(value, validator, $field) {

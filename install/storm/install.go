@@ -184,10 +184,10 @@ const templateRestartSupervisorConsole = `#!/bin/bash
 ########################################
 # AUTO CREATE BY XIAOXIAO INS %s
 ########################################
-echo "%s restarting..."
+echo "restarting..."
 %s
 %s
-echo "%s restarted, pls wating 30 sec..."
+echo "restarted, pls wating 30 sec..."
 `
 
 const templateStopSupervisorConsole = `#!/bin/bash

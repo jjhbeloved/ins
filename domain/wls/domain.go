@@ -209,7 +209,7 @@ func (w *Wls12c) touchConsoleScript() {
 		stop,
 		[]byte(fmt.Sprintf(templateStopConsole,
 			now,
-			domainName, domainName)),
+			domainName, w.DomainPath, domainName)),
 		0750,
 	))
 

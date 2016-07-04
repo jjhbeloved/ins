@@ -14,11 +14,6 @@ import (
 	"asiainfo.com/ins/cli"
 )
 
-const (
-	TAR_GZ string = "tar.gz"
-	ZIP    string = "zip"
-)
-
 type Memcached struct {
 	Memcached_PKG     string `json:"memcached_pkg"`
 	Libevent_PKG      string `json:"libevent_pkg"`

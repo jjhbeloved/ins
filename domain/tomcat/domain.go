@@ -210,14 +210,15 @@ func (tomcat *Tomcat) shell() error {
 			)),
 			0750,
 		))
-		defer os.Remove(tmp)
 		// 根据模板生成domain
 		cmd := exec.Command(tmp)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
+			os.Remove(tmp)
 			return err
 		}
+		os.Remove(tmp)
 		tomcat.touchConf(server)
 	}
 	return nil

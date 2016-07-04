@@ -2,14 +2,12 @@ function betweenCompareMin() {
     var compareTo = $('#betweenForm').find('[name="minAge"]').val();
     $('#msgMin').html('betweenCompareMin() called; compare to ' + compareTo);
     return compareTo;
-};
-
+}
 function betweenCompareMax() {
     var compareTo = $('#betweenForm').find('[name="maxAge"]').val();
     $('#msgMax').html('betweenCompareMax() called; compare to ' + compareTo);
     return compareTo;
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     between: {
         compareToMin: function(value, validator, $field) {

@@ -2,8 +2,7 @@ function greaterThanCompare() {
     var compareTo = $('#greaterThanForm').find('[name="minAge"]').val();
     $('#msg').html('greaterThanCompare() called; compare to ' + compareTo);
     return compareTo;
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     greaterThan: {
         compareTo: function(value, validator, $field) {

@@ -96,7 +96,7 @@ var AddJob = {
                     success:function(data, textStatus, jqXHR){
                         layer.closeAll();
                         $form
-                            .bootstrapValidator('disableSubmitButtons', false)
+                            .bootstrapValidator('disableSubmitButtons', false);
                         if(data.success == true) {
                             layer.msg(data.message, {
                                 icon: 1,

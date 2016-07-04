@@ -660,12 +660,10 @@ TestSuite = $.extend({}, TestSuite, {
 
 function onFormValid(e) {
     $('#msg').html('form ' + $(e.target).attr('id') + ' is valid');
-};
-
+}
 function onFormInvalid(e) {
     $('#msg').html('form ' + $(e.target).attr('id') + ' is invalid');
-};
-
+}
 describe('event form attribute callback global', function() {
     beforeEach(function() {
         $([
@@ -822,16 +820,13 @@ describe('event form programmatically', function() {
 
 function onEmailValid(e, data) {
     $('#msg').html(data.field + ' is valid');
-};
-
+}
 function onEmailInvalid(e, data) {
     $('#msg').html(data.field + ' is invalid');
-};
-
+}
 function onEmailStatus(e, data) {
     $('#status').html(data.status);
-};
-
+}
 describe('event field attribute callback global', function() {
     beforeEach(function() {
         $([
@@ -1278,12 +1273,10 @@ describe('event field trigger with events changed', function() {
 
 function onEmailAddressValidatorSuccess(e, data) {
     $('#msg').html(data.validator + ' validator passed');
-};
-
+}
 function onEmailAddressValidatorError(e, data) {
     $('#msg').html(data.validator + ' validator did not pass');
-};
-
+}
 describe('event validator declarative', function() {
     beforeEach(function() {
         $([
@@ -2411,14 +2404,12 @@ function betweenCompareMin() {
     var compareTo = $('#betweenForm').find('[name="minAge"]').val();
     $('#msgMin').html('betweenCompareMin() called; compare to ' + compareTo);
     return compareTo;
-};
-
+}
 function betweenCompareMax() {
     var compareTo = $('#betweenForm').find('[name="maxAge"]').val();
     $('#msgMax').html('betweenCompareMax() called; compare to ' + compareTo);
     return compareTo;
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     between: {
         compareToMin: function(value, validator, $field) {
@@ -2576,8 +2567,7 @@ describe('between', function() {
 function validateCaptcha(value, validator, $field) {
     var items = $('#captchaOperation').html().split(' '), sum = parseInt(items[0]) + parseInt(items[2]);
     return value === sum + '';
-};
-
+}
 describe('callback', function() {
     beforeEach(function() {
         $([
@@ -3426,8 +3416,7 @@ describe('creditCard', function() {
 
 function getDate(value, validator, $field) {
     return validator.getFieldElements('date').val();
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     Date: {
         getDate: function(value, validator, $field) {
@@ -4491,8 +4480,7 @@ function greaterThanCompare() {
     var compareTo = $('#greaterThanForm').find('[name="minAge"]').val();
     $('#msg').html('greaterThanCompare() called; compare to ' + compareTo);
     return compareTo;
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     greaterThan: {
         compareTo: function(value, validator, $field) {
@@ -6171,8 +6159,7 @@ function lessThanCompare() {
     var compareTo = $('#lessThanForm').find('[name="maxAge"]').val();
     $('#msg').html('lessThanCompare() called; compare to ' + compareTo);
     return compareTo;
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     lessThan: {
         compareTo: function(value, validator, $field) {
@@ -7962,8 +7949,7 @@ describe('vat', function() {
 function getCountryCode(value, validator, $field) {
     $('#msg').html('getCountryCode() called');
     return validator.getFieldElements('country').val();
-};
-
+}
 TestSuite = $.extend({}, TestSuite, {
     ZipCode: {
         getCountryCode: function(value, validator, $field) {

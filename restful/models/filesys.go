@@ -6,11 +6,6 @@ import (
 	"asiainfo.com/ins/utils"
 )
 
-const FS = "local"
-const SFTP = "sftp"
-const FTP = "ftp"
-const SSH = "ssh"
-
 var (
 	FSList map[string]*FSBasic
 	RSList map[string]*Release

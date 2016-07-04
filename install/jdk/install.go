@@ -85,6 +85,7 @@ func (jdk *Jdk) Install() error {
 		utils.WriteFileA(
 			bashrc,
 			[]byte(fmt.Sprintf(javaEnv,
+				time.Now().String(),
 				jdk.JDK_HOME,
 			)),
 			0644,
