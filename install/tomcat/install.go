@@ -66,7 +66,6 @@ func (tomcat *Tomcat) Install() error {
 
 	suffix := filepath.Base(fileinfo.Name())
 	var file *os.File
-	var ezz error
 	var cmd *exec.Cmd
 	uncompress := filepath.Join(utils.TMPD, "uncompress.sh")
 	defer os.Remove(uncompress)
@@ -105,20 +104,20 @@ func (tomcat *Tomcat) Install() error {
 	if err := cmd.Run(); err != nil {
 		return err
 	}
-	_, ezz = os.Stat(tomcat.APR_PKG)
-	if ezz != nil {
+	_, err = os.Stat(tomcat.APR_PKG)
+	if err != nil {
 		goto over
 	}
-	_, ezz = os.Stat(tomcat.APR_UTIL_PKG)
-	if ezz != nil {
+	_, err = os.Stat(tomcat.APR_UTIL_PKG)
+	if err != nil {
 		goto over
 	}
-	_, ezz = os.Stat(tomcat.TOMCAT_NATIVE_PKG)
-	if ezz != nil {
+	_, err = os.Stat(tomcat.TOMCAT_NATIVE_PKG)
+	if err != nil {
 		goto over
 	}
-	_, ezz = os.Stat(tomcat.JAVA_HOME)
-	if ezz != nil {
+	_, err = os.Stat(tomcat.JAVA_HOME)
+	if err != nil {
 		goto over
 	}
 	//apr_home, _ = filepath.Abs(filepath.Dir(tomcat.APR_HOME))

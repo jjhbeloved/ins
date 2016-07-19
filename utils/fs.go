@@ -101,7 +101,7 @@ func DownloadToDir(url, dir string) (string, error) {
 func httpDonwload(url, file string) (int64, error) {
 
 	info, err := os.Stat(file)
-	if err == nil || info.Size() > 0  {
+	if err == nil && info.Size() > 0  {
 		return info.Size(), err
 	}
 
